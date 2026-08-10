@@ -25,7 +25,7 @@ URL はすべて 2026-08-10 に実在確認済み。
 | 2b | 〃 | 厚労省: 特別障害者手当 | https://www.mhlw.go.jp/bunya/shougaihoken/jidou/tokubetsu.html | （未登録） | — |
 | 3 | PS_障害福祉サービス体系 | 厚労省: 障害福祉サービス等（総合） | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/service/index.html | （未登録） | — |
 | 3b | 〃 | 厚労省: 令和8年度障害福祉サービス等報酬改定 | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000202214_00013.html | （未登録） | — |
-| 3c | 〃 | e-Gov: 障害者総合支援法（条文） | https://elaws.e-gov.go.jp/document?lawid=417AC0000000123 | （未登録） | — |
+| 3c | 〃／PS_基幹相談支援センター | e-Gov: 障害者総合支援法（条文） | https://elaws.e-gov.go.jp/document?lawid=417AC0000000123 | （未登録） | — |
 | 4 | PS_自立支援医療 | 厚労省: 自立支援医療 | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/jiritsu/index.html | （未登録） | — |
 | 5 | PS_成年後見制度 | 厚労省: 成年後見はやわかり（制度ポータル） | https://guardianship.mhlw.go.jp/ | （未登録） | — |
 | 6 | PS_日常生活自立支援事業 | 厚労省: 日常生活自立支援事業 | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/chiiki-fukusi-yougo/index.html | （未登録） | — |
