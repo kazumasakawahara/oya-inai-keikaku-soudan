@@ -1,7 +1,7 @@
 ---
 type: public-system
 created: 2026-04-28
-updated: 2026-04-28
+updated: 2026-08-10
 sources:
   - "[[raw/legal/C_医療権利擁護]]"
 tags:
@@ -18,6 +18,7 @@ status: active
 sensitivity: public
 system_category: welfare
 last_updated_law: 2026-04-01
+verified_on: 2026-08-10
 ---
 
 # 日常生活自立支援事業
@@ -82,8 +83,10 @@ last_updated_law: 2026-04-01
 
 ## 関連 Entity
 
-- **北九州市社会福祉協議会**（電話: 093-882-4405）
-- 各区社会福祉協議会
+- **北九州市社会福祉協議会 生活支援部権利擁護課（権利擁護・市民後見センター「らいと」）**
+  - 相談・申込の窓口はここに一本化されている（電話: 093-882-4914 / 戸畑区汐井町1番6号 ウェルとばた / 月〜金 8:30〜17:00）
+  - 各区の窓口は**独立した法人ではなく、市社協の「区事務所」**（市内7区）。かつての区社会福祉協議会は北九州市社会福祉協議会に統合され、現在は市社協のみが法人として存在する
+  - ※ 旧記述「各区社会福祉協議会」は誤り。2026-08-10 に市公式ページ・市社協サイトで確認して訂正
 
 ## 関連する公的システム
 
@@ -98,3 +101,5 @@ last_updated_law: 2026-04-01
 
 - [[raw/legal/C_医療権利擁護]]
 - 厚労省 日常生活自立支援事業: https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/chiiki-fukusi-yougo/index.html
+- 北九州市「地域福祉権利擁護サービス」（窓口・連絡先の確認。2026-08-10 閲覧）: https://www.city.kitakyushu.lg.jp/contents/924_11005.html
+- 北九州市社会福祉協議会（区社協が「区事務所」である旨の確認。2026-08-10 閲覧）: https://kitaq-shakyo.or.jp/

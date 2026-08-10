@@ -1,6 +1,6 @@
 #!/bin/sh
 # =====================================================================
-# pre-commit — oya-inai-wiki
+# pre-commit — oya-inai-keikaku-soudan（配布テンプレート版）
 #
 # このリポジトリは実在個人の支援情報を扱う Vault の仮名化層である。
 # git 履歴に一度入った個人情報は事実上消せないため、コミット前に
@@ -32,13 +32,23 @@ $STAGED_RAW
   取り消す: git restore --staged raw/"
 fi
 
-# --- 関所2: remote の存在 --------------------------------------------
-# 設計上このリポジトリはローカル専用。remote が増えていたら誤設定を疑う。
+# --- 関所2: remote × 実データ ----------------------------------------
+# テンプレートの配布・受け取りには remote が要る（GitHub から clone する）。
+# 一方、実在個人のページを持ち始めた Vault が remote を持つのは危険。
+# そこで「remote があり、かつ個人に紐づくページが存在する」ときだけ止める。
+# 実データの運用に入ったら remote を外すか private に切り替えること。
 if [ -n "$(git remote)" ]; then
-    fail "remote が設定されています: $(git remote -v | head -1)
+    PERSONAL=$(git ls-files 'wiki/persons/*.md' 'wiki/plans/*.md' 'wiki/monitorings/*.md' 'wiki/meetings/*.md' 'wiki/trials/*.md' 'wiki/protocols/*.md' 'wiki/triggers/*.md' 'wiki/ecomaps/*.md' 'wiki/sensitive/*.md' 'wiki/sensitive/restricted/*.md' 2>/dev/null || true)
+    STAGED_PERSONAL=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^wiki/(persons|plans|monitorings|meetings|trials|protocols|triggers|ecomaps|sensitive)/' || true)
+    if [ -n "$PERSONAL" ] || [ -n "$STAGED_PERSONAL" ]; then
+        fail "remote が設定された状態で、個人に紐づくページをコミットしようとしています。
 
-この Vault は remote を持たない設計です（誤 push を構造的に防ぐため）。
-意図的に追加した場合は本フックの関所2を編集してください。"
+  remote: $(git remote -v | head -1)
+
+実データの運用に入った Vault は remote を持たない設計です（誤 push を構造的に防ぐため）。
+  remote を外す: git remote remove origin
+  または、リポジトリを private に切り替えたうえで本フックの関所2を編集してください。"
+    fi
 fi
 
 # --- 関所3: okf_lint の機微ゲート ------------------------------------
@@ -56,5 +66,5 @@ else
 ゲートを通さずにコミットすることはできません。"
 fi
 
-printf '\033[32m✓ ゲート通過\033[0m（raw/ 混入なし・remote なし・機微ゲート合格）\n'
+printf '\033[32m✓ ゲート通過\033[0m（raw/ 混入なし・remote×実データなし・機微ゲート合格）\n'
 exit 0
