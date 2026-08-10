@@ -1,0 +1,60 @@
+#!/bin/sh
+# =====================================================================
+# pre-commit — oya-inai-wiki
+#
+# このリポジトリは実在個人の支援情報を扱う Vault の仮名化層である。
+# git 履歴に一度入った個人情報は事実上消せないため、コミット前に
+# 機械的なゲートを通す。ゲートを通らないコミットは作らせない。
+#
+# 設置: 2026-07-26 / 関連: schema.md §2-7, CLAUDE.md §3-3, §13
+# =====================================================================
+
+set -e
+
+ROOT=$(git rev-parse --show-toplevel)
+cd "$ROOT"
+
+fail() {
+    printf '\n\033[31m✖ コミットを中止しました\033[0m\n%s\n\n' "$1" >&2
+    exit 1
+}
+
+# --- 関所1: raw/ の混入 ----------------------------------------------
+# .gitignore で除外しているが、git add -f で貫通できてしまう。
+# raw/ は実名・連絡先・原本資料の層なので、いかなる経路でも履歴に入れない。
+STAGED_RAW=$(git diff --cached --name-only --diff-filter=ACM | grep '^raw/' || true)
+if [ -n "$STAGED_RAW" ]; then
+    fail "raw/ 配下のファイルがステージされています。ここは実名・連絡先を置く層で、
+git 履歴に入れてはいけません（一度入ると削除が極めて困難）。
+
+$STAGED_RAW
+
+  取り消す: git restore --staged raw/"
+fi
+
+# --- 関所2: remote の存在 --------------------------------------------
+# 設計上このリポジトリはローカル専用。remote が増えていたら誤設定を疑う。
+if [ -n "$(git remote)" ]; then
+    fail "remote が設定されています: $(git remote -v | head -1)
+
+この Vault は remote を持たない設計です（誤 push を構造的に防ぐため）。
+意図的に追加した場合は本フックの関所2を編集してください。"
+fi
+
+# --- 関所3: okf_lint の機微ゲート ------------------------------------
+if [ -f scripts/okf_lint.py ]; then
+    if ! python3 scripts/okf_lint.py --gate; then
+        fail "okf_lint の機微ゲートが ERROR を検出しました（上記参照）。
+
+機微情報の漏出リスクが未解消のままコミットすることはできません。
+ERROR を解消してから再度 commit してください。
+
+  詳細を見る: python3 scripts/okf_lint.py"
+    fi
+else
+    fail "scripts/okf_lint.py が見つかりません。
+ゲートを通さずにコミットすることはできません。"
+fi
+
+printf '\033[32m✓ ゲート通過\033[0m（raw/ 混入なし・remote なし・機微ゲート合格）\n'
+exit 0
