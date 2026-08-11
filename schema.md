@@ -174,6 +174,8 @@ contradicts: []   # この試行が「もう合わない」と示した記録へ
 
 ### 2-3 protocol（日常運用プロトコル）
 
+> **protocol ＝手順書（現場の呼称）。**人が読む面（宣言・報告・説明文）では「手順書」と言う。型名 `type: protocol`・ファイル接頭辞・lint の語彙は protocol のまま（Phase 8 実務者レビュー 2026-08-11。識別子の変更は DRIFT を生むため対訳のみ）。
+
 ```yaml
 protocol_domain: morning | meal | bath | sleep | outing | medical | private-time | others-rights-learning | wiki-explanation
 person_id: "P_001"
