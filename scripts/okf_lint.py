@@ -100,6 +100,15 @@ VALID_CONFIRMED_BY = {"記録のみ", "本人に確認", "家族に確認", "支
 
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+# --- source_hash（schema.md §1。任意）------------------------------------
+#
+# raw/ 原本の sha256。両系（Vault と Neo4j 支援DB）が同一原本から出たことを
+# 識別子だけで突き合わせるための橋（dual-intake-routing.md §1）。
+# 任意フィールドなので「あれば形式を検査し、無ければ何もしない」。
+# 形式不正は WARN — 突合に使えないだけで、機微情報の漏出とは性質が違う。
+
+SOURCE_HASH_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+
 # --- PII パターン（wiki/ に出現してはならないもの。実名は raw/ のみ） ----
 
 # --- PII パターン（schema.md §2-7 改訂版に対応）---------------------
@@ -262,6 +271,12 @@ def lint():
                     f"（team / consent-required / origin-only）")
             if (fm.get("person_id") or fm.get("person_ids")) and not pb:
                 warns.append(f"[出所] {r}: 個人に紐づくページに `provided_by` がない（新規ページから徐々に）")
+
+            # --- ★ source_hash の形式検査（schema.md §1。任意）----------
+            sh = fm.get("source_hash", "")
+            if sh and not SOURCE_HASH_RE.match(sh):
+                warns.append(
+                    f"[出所] {r}: `source_hash` が sha256 の形式（64桁の16進）でない: `{sh}`")
 
             # --- ★ 鮮度検査（schema.md §6）---------------------------
             # 編集した日(updated)ではなく「確かめた日(last_confirmed)」を見る。

@@ -180,6 +180,20 @@ CASES = [
              extra="share_scope: origin-only\n"),
         set(),
     ),
+    # --- source_hash（schema.md §1。任意）: 正しい形式（64桁16進）は通る ---
+    (
+        "wiki/concepts/C_hash正常.md",
+        page("concept", "internal", "本文",
+             extra="source_hash: " + "a1b2" * 16 + "\n"),
+        set(),
+    ),
+    # --- source_hash: 不正な形式は WARN（無ければ何も言わないのは上の既存ケース群で担保）---
+    (
+        "wiki/concepts/C_hash不正.md",
+        page("concept", "internal", "本文",
+             extra="source_hash: deadbeef\n"),
+        {"source_hash"},
+    ),
 ]
 
 
@@ -277,6 +291,7 @@ def main():
         print("  - provided_by / share_scope の語彙を検査し、origin-only は allowlist に載らない")
         print("  - 撤去した法律職4型は未定義 type として弾かれる")
         print("  - 鮮度 WARN は --gate（commit・起動時の関所）を止めない")
+        print("  - source_hash は任意（正しい64桁16進が通り、不正形式のみ WARN）")
         return 0
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

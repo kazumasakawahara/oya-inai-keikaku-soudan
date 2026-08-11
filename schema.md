@@ -27,6 +27,7 @@ superseded_by: "[[...]]"     # status: stale のとき。どの記録に置き�
 provided_by: 本人 | 家族 | 事業所 | 後見人 | 医療機関 | 行政 | 会議 | 相談支援   # 情報の出所（§7）。AI が保存先の棚から推定して付与
 provided_by_detail: "GH○○（[[E_GH○○]] 参照）"   # 任意。具体名は entity 参照で
 share_scope: team | consent-required | origin-only   # 宛先境界（§7）。欠落時は consent-required とみなす
+source_hash: "64桁の16進（sha256）"   # 任意。sources の raw/ 原本のハッシュ。Neo4j 支援DB と同一原本を突き合わせるための橋
 ---
 ```
 
@@ -49,6 +50,7 @@ share_scope: team | consent-required | origin-only   # 宛先境界（§7）。�
 | `provided_by` | △ | **この情報は誰から来たか**。多法人モデルの出所記録。AI が振り分け先の棚から推定して付与する（黙認方式） |
 | `provided_by_detail` | △ | 提供元の具体名。entity ページ参照で書く（個人名は書かない） |
 | `share_scope` | △ | **誰に渡してよいか**。`team`（支援チーム内共有可）/ `consent-required`（本人・後見人の同意要）/ `origin-only`（提供元と相談支援専門員の間に留める）。欠落時は安全側の `consent-required` 扱い |
+| `source_hash` | △ | **任意**。`sources` の raw/ 原本の sha256（64桁の16進）。Vault と Neo4j 支援DB が**同一原本から出たことを識別子だけで突き合わせる**ための橋（dual-intake-routing.md §1）。単独運用（Neo4j と連携しない場合）では書かなくてよい。lint はあれば形式のみ検査し、無ければ何もしない |
 
 > **sensitivity は「深さ」・share_scope は「宛先」の直交2軸。** 会議で共有済みの行動障害の詳細は sensitivity: sensitive かつ share_scope: team でありうる。`origin-only` のページは sensitivity によらず外部共有一覧（--allowlist）から無条件に除外される（fail-closed）。
 
