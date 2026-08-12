@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>福祉専門職のための完全導入マニュアル（記録テンプレート編）</title>
+<style>
+  :root{
+    --ink:#1c1917; --ink2:#44403c; --ink3:#79716b;
+    --line:#e7e5e4; --bg:#fdfcfb; --card:#fff;
+    --accent:#7c5a3a; --accent-soft:#f6f0e9; --accent-line:#e6d8c7;
+    --ok:#3f6f52; --ok-soft:#eef4f0; --ok-line:#d6e5db;
+    --alert:#9a3d2c; --alert-soft:#fbf0ed; --alert-line:#eed4cc;
+    --warn:#8a6d1f; --warn-soft:#faf5e6; --warn-line:#e8dcb5;
+    --mute:#f6f5f3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Yu Gothic UI","Yu Gothic","Meiryo","Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.95;font-size:16px;letter-spacing:.01em}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 24px 96px}
+  header.doc{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:34px}
+  h1{font-size:30px;line-height:1.4;margin:0 0 8px;letter-spacing:-.01em}
+  .sub{color:var(--ink3);font-size:14px;margin:0}
+  h1.part{font-size:24px;margin:64px 0 18px;padding:14px 18px;
+    background:var(--accent-soft);border:1px solid var(--accent-line);
+    border-radius:10px;color:var(--accent);letter-spacing:.02em}
+  h2{font-size:22px;margin:52px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--ink);line-height:1.5}
+  h3{font-size:18px;margin:34px 0 10px;color:var(--ink2);line-height:1.55}
+  h4{font-size:16px;margin:24px 0 8px;color:var(--ink2)}
+  p{margin:0 0 15px}
+  ul,ol{margin:0 0 16px;padding-left:1.5em}
+  li{margin-bottom:7px}
+  a{color:var(--accent);text-underline-offset:3px}
+  code{background:var(--mute);border:1px solid var(--line);border-radius:5px;
+    padding:1px 5px;font-size:13.5px;
+    font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+  pre{background:#faf9f7;border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;overflow-x:auto;margin:0 0 18px;line-height:1.7}
+  pre code{background:none;border:none;padding:0;font-size:13px}
+  blockquote{margin:0 0 18px;padding:14px 18px;background:var(--accent-soft);
+    border:1px solid var(--accent-line);border-left:4px solid var(--accent);
+    border-radius:0 10px 10px 0;color:var(--ink2)}
+  blockquote p:last-child{margin-bottom:0}
+  table{border-collapse:collapse;width:100%;margin:0 0 20px;font-size:14.5px;
+    background:var(--card);display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:var(--mute);font-weight:600;white-space:nowrap}
+  hr{border:none;border-top:1px solid var(--line);margin:44px 0}
+  strong{font-weight:700}
+  footer.doc{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--ink3);font-size:13.5px}
+  @media print{
+    body{background:#fff;font-size:11pt;line-height:1.7}
+    .wrap{max-width:none;padding:0}
+    h1.part,h2,h3{break-after:avoid}
+    pre,table,blockquote{break-inside:avoid}
+  }
+  @media (max-width:640px){
+    .wrap{padding:24px 16px 64px}
+    h1{font-size:24px} h1.part{font-size:20px} h2{font-size:19px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="doc">
+  <h1>福祉専門職のための完全導入マニュアル（記録テンプレート編）</h1>
+  <p class="sub">記録テンプレート（oya-inai-keikaku-soudan）／ このページは同フォルダの Markdown 版から生成しています</p>
+</header>
+<blockquote>
+<p><strong>記録テンプレート（oya-inai-keikaku-soudan）を「ゼロから導入し、毎日の相談支援で使いこなす」までを 1 冊にまとめた完全ガイドです。</strong></p>
+<ul>
+<li><strong>対象読者</strong>: パソコンの操作に不慣れな方でも大丈夫。計画相談支援の担当者・意思決定支援に関わる方を想定しています</li>
+<li><strong>対応 OS</strong>: Mac / Windows 両対応</li>
+<li><strong>所要時間の目安</strong>: 導入 30 分〜1 時間（第 3〜5 章）。最初のインテーク（第 6 章）は、別に半日ほど見ておくと安心です</li>
+<li><strong>データベースは不要です。</strong> ただし <strong>Claude は必要</strong>です（理由は 1-3）</li>
+</ul>
+<p>最終更新: 2026-08-12 ／ β版</p>
+</blockquote>
+<hr>
+<h2 id="目次">目次</h2>
+<ul>
+<li><a href="#このマニュアルの読み方">このマニュアルの読み方</a>（手順に自信がない方はここから）</li>
+<li><a href="#全体の道のり">全体の道のり</a></li>
+<li><strong>第 1 部　知る</strong></li>
+<li><a href="#第-1-章このテンプレートでできること">第 1 章　このテンプレートでできること</a></li>
+<li><a href="#第-2-章導入前の準備と確認">第 2 章　導入前の準備と確認</a></li>
+<li><strong>第 2 部　導入する</strong></li>
+<li><a href="#第-3-章obsidian-と-vault-を用意する">第 3 章　Obsidian と Vault を用意する</a></li>
+<li><a href="#第-4-章受付箱を作りclaude-につなぐ">第 4 章　受付箱を作り、Claude につなぐ</a></li>
+<li><a href="#第-5-章動作確認と環境の調整">第 5 章　動作確認と環境の調整</a></li>
+<li><strong>第 3 部　使う</strong></li>
+<li><a href="#第-6-章最初のインテーク">第 6 章　最初のインテーク</a></li>
+<li><a href="#第-7-章毎日の使い方">第 7 章　毎日の使い方</a></li>
+<li><a href="#第-8-章制度ウォッチ任意">第 8 章　制度ウォッチ（任意）</a></li>
+<li><strong>第 4 部　守る・直す</strong></li>
+<li><a href="#第-9-章個人情報を守るための運用">第 9 章　個人情報を守るための運用</a></li>
+<li><a href="#第-10-章トラブルシューティング">第 10 章　トラブルシューティング</a></li>
+<li><strong>付録</strong></li>
+<li><a href="#付録-aフォルダの地図">付録 A　フォルダの地図</a></li>
+<li><a href="#付録-bページの型-一覧">付録 B　ページの型 一覧</a></li>
+<li><a href="#付録-c用語集">付録 C　用語集</a></li>
+<li><a href="#付録-d関連ドキュメント">付録 D　関連ドキュメント</a></li>
+</ul>
+<hr>
+<h2 id="このマニュアルの読み方">このマニュアルの読み方</h2>
+<ul>
+<li><code>この書体</code> の部分は、パソコンに入力する文字列です。<strong>そのままコピーして貼り付けて</strong>ください</li>
+<li>各手順に <strong>「なぜ必要か」</strong> を添えています。意味がわかると安心して進められます</li>
+<li>うまくいかないときは、その場で立ち止まらず <a href="#第-10-章トラブルシューティング">第 10 章</a> を見てください</li>
+<li><strong>短い版もあります</strong>。手順だけを 30 分でたどりたい方は <code>docs/導入手順.md</code> へ。このマニュアルは、その手順に「なぜ」と「困ったとき」を足したものです</li>
+</ul>
+<h3 id="手順に自信がない方へ--claude-に横についてもらえます">手順に自信がない方へ —— Claude に横についてもらえます</h3>
+<p>この仕組みはどうせ Claude を使います。<strong>その Claude に、導入作業そのものを手伝ってもらえます。</strong>導入のためだけに新しい道具を入れる必要はありません。</p>
+<p>やることは2つだけです。</p>
+<ol>
+<li><strong>Claude Desktop を入れる</strong>（→ <a href="#2-2-用意するもの">2-2</a>）</li>
+<li><strong>filesystem の差込口をつなぐ</strong>（→ <a href="#4-2-claude-に3つのフォルダを見せる">4-2</a>）</li>
+</ol>
+<p>これだけで、あとは Claude に「導入マニュアルの第 3 章を見ながら手伝ってください」とお願いできます。</p>
+<table>
+<thead>
+<tr>
+<th>Claude ができること</th>
+<th>ご自身の手が要ること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>フォルダの中を見て、必要なファイルが揃っているか確かめる</td>
+<td>アプリのインストール（管理者パスワードの入力）</td>
+</tr>
+<tr>
+<td><code>CLAUDE.md</code> をあなたの環境に合わせて書き換える</td>
+<td>ライセンスの同意ボタンを押す</td>
+</tr>
+<tr>
+<td>エラーの文字を読んで、何が起きているか日本語で説明する</td>
+<td>ボタンを押す・文字を貼る</td>
+</tr>
+<tr>
+<td>次に何をすればよいかを、いまの状態に合わせて案内する</td>
+<td>最後の確認と判断</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>なぜ全部を任せられないのか。</strong>アプリの導入には、パソコンの管理者パスワードの入力と、ライセンスへの同意が含まれます。<strong>この2つは、AI が代わりにやってはいけない操作</strong>です。ここだけは必ずご自身で。</p>
+</blockquote>
+<hr>
+<h2 id="全体の道のり">全体の道のり</h2>
+<p>いまどこにいるかを見失ったときは、ここに戻ってください。</p>
+<pre><code>【初回だけ】
+  第2章  準備を確かめる（Obsidian・Claude の契約）
+    ↓
+  第3章  Vault を置く（＋公開への道を断つ）
+    ↓
+  第4章  受付箱を作り、Claude につなぐ    ← ここがやま場。Claude に手伝ってもらえます
+    ↓
+  第5章  動作確認（lint）と環境の調整
+    ↓
+【最初の一人】
+  第6章  パイロット1名を、4点セットで登録する
+    ↓
+【毎日】
+  第7章  受付箱に置く → 仕分けの宣言を見る → 訂正する
+
+【困ったとき】
+  第10章  トラブルシューティング（まず 10-0 を読んでください）
+</code></pre>
+<p>困ったときの入口は3つだけです。</p>
+<table>
+<thead>
+<tr>
+<th>状況</th>
+<th>どこへ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>エラーの文字が出た</td>
+<td><strong>そのまま Claude に貼る</strong>（→ <a href="#10-0-まず-claude-に聞いてみる">10-0</a>）</td>
+</tr>
+<tr>
+<td>lint が ERROR を出した</td>
+<td><a href="#10-2-lint-が-error-を出すとき">10-2</a></td>
+</tr>
+<tr>
+<td>コミットが止まった</td>
+<td><a href="#10-3-コミットが止まるとき関所">10-3</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 class="part" id="第-1-部知る">第 1 部　知る</h1>
+<h2 id="第-1-章このテンプレートでできること">第 1 章　このテンプレートでできること</h2>
+<h3 id="1-1-これは何か">1-1. これは何か</h3>
+<p><strong>相談支援の記録を、Obsidian という無料アプリの上に置くための「型」の一式</strong>です。空のフォルダと、ページの雛形と、機械的な検査だけが入っています。</p>
+<p>いちばんの狙いは、<strong>聞き取った内容を、担当者が仕分けずに済むようにする</strong>ことです。面談メモの走り書きでも、事業所から届いた支援記録でも、清書せずにそのまま渡していただければ十分です。「これは禁忌か、引き金か」「どのページに書くか」を判断するのは Claude の仕事で、あなたの仕事ではありません。</p>
+<h3 id="1-2-何が入っているか">1-2. 何が入っているか</h3>
+<table>
+<thead>
+<tr>
+<th>中身</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>raw/</code> の 8 つの棚</strong></td>
+<td>原本の置き場。提供主体別（本人・家族から／会議／事業所から など）。<strong>追記専用</strong>で、入れたら書き換えも削除もしません</td>
+</tr>
+<tr>
+<td><strong><code>wiki/</code> の 15 の型</strong></td>
+<td>person（本人）・plan（計画）・monitoring・meeting・trigger（引き金）・protocol（手順書）ほか。仮名で書きます</td>
+</tr>
+<tr>
+<td><strong><code>templates/</code></strong></td>
+<td>各ページの雛形。書き出しに迷わないためのもの</td>
+</tr>
+<tr>
+<td><strong><code>記入例/</code></strong></td>
+<td>架空の利用者を使った実例。<strong>実際の書きぶりを、始める前に見られます</strong></td>
+</tr>
+<tr>
+<td><strong>同梱の知識ページ 21 件</strong></td>
+<td>全国共通の 10 制度と、福祉・医療の一般概念。最初から棚が埋まっている状態で届きます</td>
+</tr>
+<tr>
+<td><strong><code>scripts/okf_lint.py</code></strong></td>
+<td>型の検査。実名の混入や、日付・ID の欠落を機械的に見つけます</td>
+</tr>
+<tr>
+<td><strong><code>githooks/pre-commit</code></strong></td>
+<td>関所。危ないコミットを止めます</td>
+</tr>
+<tr>
+<td><strong><code>docs/支援の輪の確認事項.md</code></strong></td>
+<td>支援の輪の点検表（7 章 31 項目・印刷用つき）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-3-データベースは不要ですただし-claude-は必要です">1-3. データベースは不要です。ただし Claude は必要です</h3>
+<p>このテンプレートは、<strong>下位の「くらしサポート（データベース）」がなくても単体で使えます。</strong>Obsidian と、このテンプレートと、Claude だけで完結します。</p>
+<p>一方で、<strong>Claude なしでは完結しません。</strong>資料の仕分けも、ページの起こし方も、引き出しも、Claude に日本語でお願いする設計だからです。Claude の有料プランが、実質的な導入要件になります。</p>
+<blockquote>
+<p><strong>なぜ無料プランではいけないのか。</strong>無料プランは、入力した内容がサービスの改善に用いられうるためです。利用者さんの情報を扱う用途では使えません。</p>
+</blockquote>
+<h3 id="1-4-何が守られているか">1-4. 何が守られているか</h3>
+<ul>
+<li><strong>実名は <code>raw/</code> の中だけ。</strong><code>wiki/</code> は <code>P_001</code> のような記号で書きます。lint が実名の混入を検査します</li>
+<li><strong><code>raw/</code> は追記専用。</strong>入れた原本は書き換えも削除もしません。「失われない誤り＞失われる正しさ」という考え方です</li>
+<li><strong>公開への道を断ってから使い始めます。</strong>個人のページがある状態で、公開先へ送ろうとすると、関所が止めます</li>
+<li><strong>受付箱は Vault の外。</strong>記録される前なら、置き間違いを取り消せます</li>
+</ul>
+<hr>
+<h2 id="第-2-章導入前の準備と確認">第 2 章　導入前の準備と確認</h2>
+<h3 id="2-1-パソコンの条件">2-1. パソコンの条件</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>必要なもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OS</td>
+<td>Mac（macOS 12 以降）／ Windows 10・11</td>
+</tr>
+<tr>
+<td>空き容量</td>
+<td>1 GB もあれば十分です</td>
+</tr>
+<tr>
+<td>インターネット</td>
+<td>導入時と、Claude を使うときに必要</td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>python3</code>（Mac は標準で入っています。Windows は 2-3 参照）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-用意するもの">2-2. 用意するもの</h3>
+<table>
+<thead>
+<tr>
+<th>用意するもの</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Obsidian</strong></td>
+<td>無料のメモアプリ。https://obsidian.md からインストールします</td>
+</tr>
+<tr>
+<td><strong>Claude の有料プラン</strong></td>
+<td>https://claude.com で契約します</td>
+</tr>
+<tr>
+<td><strong>Claude Desktop</strong></td>
+<td>Claude のパソコン用アプリ。https://claude.com/download から</td>
+</tr>
+<tr>
+<td><strong>Git</strong>（任意）</td>
+<td>変更の履歴を残したい場合のみ。ZIP でのダウンロードでも使えます</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-3-windows-の方への補足">2-3. Windows の方への補足</h3>
+<p><code>python3</code> が入っていない場合は、Microsoft Store から「Python 3」を入れてください。入っているかどうかは、PowerShell で次を打てば分かります。</p>
+<pre><code class="language-powershell">python3 --version
+</code></pre>
+<p>バージョンの数字が出れば大丈夫です。「見つかりません」と出たら、上のとおり入れてください。</p>
+<h3 id="2-4-導入前チェックリスト">2-4. 導入前チェックリスト</h3>
+<ul>
+<li>[ ] Obsidian を入れた</li>
+<li>[ ] Claude の有料プランを契約した</li>
+<li>[ ] Claude Desktop を入れた</li>
+<li>[ ] <code>python3 --version</code> でバージョンが出る</li>
+<li>[ ] <strong>実データを入れる前に、公開への道を断つ</strong>（→ <a href="#3-3-公開への道を断つ最重要">3-3</a>）ことを理解した</li>
+</ul>
+<hr>
+<h1 class="part" id="第-2-部導入する">第 2 部　導入する</h1>
+<h2 id="第-3-章obsidian-と-vault-を用意する">第 3 章　Obsidian と Vault を用意する</h2>
+<blockquote>
+<p>🤝 <strong>この章から先は、Claude に横についてもらいながら進められます。</strong>先に Claude Desktop と filesystem の差込口を済ませて（→ <a href="#4-2-claude-に3つのフォルダを見せる">4-2</a>）、この章に戻ってきても構いません。順番はどちらでも大丈夫です。</p>
+</blockquote>
+<h3 id="3-1-テンプレートを手に入れる">3-1. テンプレートを手に入れる</h3>
+<p><strong>方法 A（おすすめ・Git を使う場合）</strong></p>
+<pre><code class="language-bash">git clone https://github.com/kazumasakawahara/oya-inai-keikaku-soudan.git ~/Obsidian/oya-inai-keikaku-soudan
+</code></pre>
+<p><strong>方法 B（ZIP でダウンロード）</strong></p>
+<p>GitHub のページ右上の緑のボタンから「Download ZIP」を選び、展開して、<code>~/Obsidian/</code> の下に置きます。</p>
+<blockquote>
+<p>ZIP の場合、<strong>実行の許可が落ちていることがあります。</strong>そのままだと関所（後述）が黙って効かなくなるので、次を一度だけ実行してください。</p>
+<p><code>bash
+cd &lt;あなたのVault&gt; &amp;&amp; chmod 755 githooks/pre-commit scripts/*.py scripts/*.sh</code></p>
+</blockquote>
+<h3 id="3-2-obsidian-で開く">3-2. Obsidian で開く</h3>
+<p>Obsidian を起動し、「フォルダを Vault として開く」を選んで、いま置いたフォルダを指定します。左側にフォルダの一覧が出れば成功です。</p>
+<p><strong>なぜ必要？</strong> — Obsidian は、フォルダをそのまま「ノートの入れ物」として扱うアプリです。特別な保存形式はありません。中身はただのテキストファイルなので、<strong>将来 Obsidian をやめても記録は残ります。</strong></p>
+<h3 id="3-3-公開への道を断つ最重要">3-3. 公開への道を断つ（最重要）</h3>
+<p><strong>実データの運用を始める前に、必ず行ってください。</strong></p>
+<pre><code class="language-bash">cd &lt;あなたのVault&gt;
+git remote remove origin
+</code></pre>
+<p>または、GitHub 上で private リポジトリに切り替えます。</p>
+<p><strong>なぜ必要？</strong> — このテンプレートは公開リポジトリから配られます。そのまま使い続けると、<strong>あなたの利用者さんの記録を公開先へ送る経路が残ったまま</strong>になります。<code>.gitignore</code> が <code>raw/</code> を除外してはいますが、それだけに頼らず、経路そのものを断ちます。</p>
+<blockquote>
+<p><strong>関所が見張ります。</strong><code>githooks/pre-commit</code> の関所 2 が、これを機械的に検査します。<strong>公開先が設定されていて、かつ個人に紐づくページ（persons / plans / monitorings / meetings / trials / protocols / triggers / ecomaps / sensitive）がある状態でのコミットは止まります。</strong>テンプレートを取ってきただけの段階（個人のページが 0 件）では止まりません。</p>
+</blockquote>
+<h3 id="3-4-関所を有効にする">3-4. 関所を有効にする</h3>
+<pre><code class="language-bash">cd &lt;あなたのVault&gt;
+git config core.hooksPath githooks
+</code></pre>
+<p>これで、コミットのたびに検査が走ります。</p>
+<hr>
+<h2 id="第-4-章受付箱を作りclaude-につなぐ">第 4 章　受付箱を作り、Claude につなぐ</h2>
+<h3 id="4-1-受付箱を作る">4-1. 受付箱を作る</h3>
+<p>Vault の<strong>外</strong>に、資料をいったん置くフォルダを 1 つ作ってください。</p>
+<ul>
+<li>Mac の例: <code>~/Desktop/受付箱</code></li>
+<li>Windows の例: <code>C:\Users\あなたの名前\Desktop\受付箱</code></li>
+</ul>
+<p>デスクトップ以外に作った場合は、<strong>デスクトップにショートカットを 1 つ</strong>置きます。日々さわるのはここだけです。</p>
+<blockquote>
+<p><strong>なぜ Vault の外に作るのか。</strong></p>
+<p>受け取った資料はまずここに置き、Claude が中身を仕分けて<strong>原本を <code>raw/</code> の棚へ移します</strong>（コピーではなく移動なので、済めば受付箱は空に戻ります）。<code>raw/</code> は追記専用で、入れたら書き換えも削除もできません。手前に一段あることで、<strong>置き間違いを記録される前に取り消せます。</strong>Obsidian を開いていなくても使える、という利点もあります。</p>
+<p><strong>受付箱を <code>raw/</code> の下や Vault の中には作らないでください。</strong>8 つの棚と階層を混ぜると、「消せない場所」の境目が分からなくなります。</p>
+</blockquote>
+<h3 id="4-2-claude-に3つのフォルダを見せる">4-2. Claude に3つのフォルダを見せる</h3>
+<p>Claude Desktop とパソコンのフォルダをつなぐ仕組みを <strong>MCP（差込口）</strong> と呼びます。<strong>指定するのは次の 3 つです。</strong></p>
+<ol>
+<li><strong>この Vault</strong>（例: <code>~/Obsidian/oya-inai-keikaku-soudan</code>）</li>
+<li><strong>スキルの置き場所</strong>（例: <code>~/.claude/skills</code>）</li>
+<li><strong>受付箱</strong>（例: <code>~/Desktop/受付箱</code>）</li>
+</ol>
+<p><strong>この設定は最初の 1 回きり</strong>です。手順の詳細は、配布物に同梱の MCP 設定ガイドに沿って進めてください。</p>
+<blockquote>
+<p><strong>設定の文字列は、Claude 自身に作ってもらえます。</strong>「filesystem の差込口を、この 3 つのフォルダで設定したいです」と頼めば、貼り付ける内容を出してくれます。<strong>ご自身の手が要るのは「押す・貼る・打つ」だけ</strong>です。</p>
+<p><strong>いちばんつまずくのは「完全終了」です。</strong>設定はアプリを完全に終了して起動し直すまで反映されません。ウィンドウを閉じるだけでは終了していません（Mac は <code>command</code> + <code>Q</code>）。</p>
+</blockquote>
+<h3 id="4-3-つながったか確かめる">4-3. つながったか確かめる</h3>
+<p>Claude Desktop に、こう聞いてみてください。</p>
+<blockquote>
+<p>「Vault のフォルダの中身を見て、raw の下にいくつ棚があるか教えてください」</p>
+</blockquote>
+<p><strong>「8つ」</strong>と答えが返れば成功です。答えられない場合は <a href="#10-4-claude-がフォルダを見てくれないとき">10-4</a> へ。</p>
+<hr>
+<h2 id="第-5-章動作確認と環境の調整">第 5 章　動作確認と環境の調整</h2>
+<h3 id="5-1-lint検査を初めて動かす">5-1. lint（検査）を初めて動かす</h3>
+<pre><code class="language-bash">cd &lt;あなたのVault&gt;
+python3 scripts/okf_lint.py
+</code></pre>
+<p><strong>「違反なし」</strong>と出れば、骨格は健全です。追加のインストールは要りません（Python 3 の標準機能だけで動きます）。</p>
+<p><strong>なぜ必要？</strong> — この検査は、<strong>実名の混入や、日付・ID の欠落を機械的に見つけます。</strong>人の注意力に頼らずに済ませるための仕掛けです。ERROR が出た状態ではコミットが通りません。</p>
+<h3 id="5-2-claudemd-をあなたの環境に合わせる">5-2. <code>CLAUDE.md</code> をあなたの環境に合わせる</h3>
+<p><code>CLAUDE.md</code> は Claude への指示書です。作者の環境を前提にした節が含まれているので、あなたの環境に合わせて調整してください。</p>
+<blockquote>
+<p><strong>これは Claude に頼めます。</strong>「CLAUDE.md を私の環境に合わせて調整してください。Neo4j は使いません」のように伝えれば、一括で直してくれます。</p>
+</blockquote>
+<p>調整するのは次の 4 か所です。</p>
+<table>
+<thead>
+<tr>
+<th>箇所</th>
+<th>どうするか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>§9 Neo4j 支援DBとの連携</td>
+<td>使わなければ「該当なし」と明記</td>
+</tr>
+<tr>
+<td>§10 既存スキルとの連携</td>
+<td>あなたの環境にあるものだけ残す</td>
+</tr>
+<tr>
+<td>§14 ファイル操作ツールの選択原則</td>
+<td>あなたの AI 環境の流儀に置き換え</td>
+</tr>
+<tr>
+<td>冒頭の Vault パス表記</td>
+<td>あなたの Vault 名に置き換え</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-3-ここまでで出来たこと">5-3. ここまでで出来たこと</h3>
+<ul>
+<li>[ ] Vault が Obsidian で開ける</li>
+<li>[ ] 公開への道を断った</li>
+<li>[ ] 関所が有効になっている</li>
+<li>[ ] 受付箱がデスクトップにある</li>
+<li>[ ] Claude が Vault の中を見られる</li>
+<li>[ ] lint が「違反なし」と言う</li>
+</ul>
+<p>全部に印がついたら、次は実際の記録に入ります。</p>
+<hr>
+<h1 class="part" id="第-3-部使う">第 3 部　使う</h1>
+<h2 id="第-6-章最初のインテーク">第 6 章　最初のインテーク</h2>
+<h3 id="6-1-書き始める前に実例を1つ読む">6-1. 書き始める前に、実例を1つ読む</h3>
+<p><strong><code>記入例/語りの例/仕分け宣言.md</code> に目を通してください。</strong></p>
+<p>一つの語りが、どのページに分かれていくのか。5 つの実例で示してあります。<strong>ここが分かれば、あとは同じ要領です。</strong>逆にここを飛ばすと、「自分で仕分けなければ」と思い込んだまま使うことになります。</p>
+<h3 id="6-2-パイロット-1-名から始める">6-2. パイロット 1 名から始める</h3>
+<p>いきなり全員を移そうとしないでください。<strong>まず 1 名</strong>、次の 4 点セットから始めることをおすすめします。</p>
+<table>
+<thead>
+<tr>
+<th>順番</th>
+<th>何を</th>
+<th>どこへ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>現行のサービス等利用計画</td>
+<td><code>wiki/plans/</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>直近のモニタリング</td>
+<td><code>wiki/monitorings/</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>直近のサービス担当者会議</td>
+<td><code>wiki/meetings/</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>本人のページ＋禁忌・引き金を数件</td>
+<td><code>wiki/persons/</code> <code>wiki/triggers/</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>やり方は簡単です。</strong>上の資料を受付箱に置いて、Claude にこう伝えます。</p>
+<blockquote>
+<p>「受付箱に入れた資料を取り込んでください」</p>
+</blockquote>
+<p>Claude が中身を読み、<strong>どの棚に入れ、どのページを起こすかを先に宣言します。</strong>違っていればその場で訂正できます。</p>
+<h3 id="6-3-既存の資料をまとめて持ち込む場合">6-3. 既存の資料をまとめて持ち込む場合</h3>
+<p>過去の資料フォルダを丸ごと移す前に、<strong>重複を検査してください。</strong>同じ内容のフォルダが二重に存在していた、という事例が実際にあります。</p>
+<pre><code class="language-bash">find &lt;移行元&gt; -type f -exec shasum -a 256 {} \; | sort | uniq -c -w64 | awk '$1&gt;1'
+</code></pre>
+<p>重複が出たら、<strong>どちらが正本かを決めてから</strong>移します。移行はコピーで行い、<strong>移行元は消さずに残してください。</strong></p>
+<hr>
+<h2 id="第-7-章毎日の使い方">第 7 章　毎日の使い方</h2>
+<h3 id="7-1-基本は3ステップだけ">7-1. 基本は3ステップだけ</h3>
+<pre><code>① 受付箱に置く
+     ↓
+② 仕分けの宣言を見る（「これは禁忌として、これは引き金として扱います」）
+     ↓
+③ 違っていれば訂正する
+</code></pre>
+<p>それだけです。<strong>原本は自動で <code>raw/</code> の棚へ移り、受付箱は空に戻ります。</strong>捨てる操作は要りません。</p>
+<h3 id="7-2-書き分けの原則">7-2. 書き分けの原則</h3>
+<table>
+<thead>
+<tr>
+<th>何を</th>
+<th>どこへ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>様式に書いたもの（計画・モニタリングの写し）</td>
+<td><code>raw/70_自分の作成物/</code></td>
+</tr>
+<tr>
+<td><strong>様式に書けなかった判断の過程</strong></td>
+<td><code>wiki/</code> の該当ページ</td>
+</tr>
+<tr>
+<td>事業所・医療機関から届いた資料</td>
+<td><code>raw/30_事業所から/</code> <code>raw/50_医療から/</code></td>
+</tr>
+<tr>
+<td>本人・家族から受け取ったもの</td>
+<td><code>raw/10_本人・家族から/</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>いちばん大事なのは 2 行目です。</strong>「なぜその判断に至ったか」は様式には収まりません。そこが、あとから読み返して効く部分です。</p>
+<h3 id="7-3-モニタリングの前後に開くもの">7-3. モニタリングの前後に開くもの</h3>
+<p><strong><code>docs/支援の輪の確認事項.md</code></strong> を開いてください。7 章 31 項目の点検表です。面談の場での関わり方ではなく、<strong>本人が決めたことが成り立つだけの輪ができているか</strong>を見ます。</p>
+<p>印刷して持ち込む場合は、同じフォルダの <code>支援の輪の確認事項_印刷用.html</code> をブラウザで開いて印刷してください（A4・1 枚）。</p>
+<blockquote>
+<p>全部に印がつくことは目的ではありません。<strong>空欄が見つかったときが、この表の役に立った時です。</strong></p>
+</blockquote>
+<h3 id="7-4-引き出す">7-4. 引き出す</h3>
+<p>Claude に日本語で聞くだけです。</p>
+<blockquote>
+<p>「◯◯さんの、この 3 か月の変化を教えてください」
+「◯◯さんの禁忌事項と、その根拠になった記録を出してください」
+「次のモニタリングの下書きを、直近の記録から作ってください」</p>
+</blockquote>
+<hr>
+<h2 id="第-8-章制度ウォッチ任意">第 8 章　制度ウォッチ（任意）</h2>
+<p>制度改正を見張る仕組みが同梱されています。<strong>使わなくても記録の運用はできます</strong>ので、余裕が出てからで構いません。</p>
+<h3 id="8-1-地域枠を登録する">8-1. 地域枠を登録する</h3>
+<p><code>docs/watchlist.md</code> の §2 が空欄になっています。<strong>あなたの自治体</strong>の障害福祉のページを登録してください。</p>
+<blockquote>
+<p><strong>これも Claude に頼めます。</strong>「◯◯市の障害福祉のページを watchlist に登録して」と伝えれば、検索してURLを確かめ、台帳に追記するところまでやってくれます。</p>
+</blockquote>
+<p>手帳（療育手帳は自治体ごとの運用です）や医療費助成など、<strong>自治体差の大きい制度から</strong>優先して登録すると効きます。</p>
+<h3 id="8-2-監視ツールを登録する">8-2. 監視ツールを登録する</h3>
+<p><code>docs/watchlist.md</code> §1 の冒頭にある手順に従ってください。</p>
+<blockquote>
+<p><strong>忘れやすい点が 1 つ。</strong>作成時は毎日実行でしか作れないため、<strong>作成後に月次へ変更</strong>してください。手順の中にも書いてあります。初回は基準を取るだけの実行で、差分の検知は 2 回目からです。</p>
+</blockquote>
+<h3 id="8-3-改正を検知したら">8-3. 改正を検知したら</h3>
+<p><strong>機械は起票まで、判断と反映は人間です。</strong>取得した内容を <code>raw/60_行政・制度/</code> に保存し、review を起票し、<strong>あなたが判断して</strong>該当ページを更新します（<code>docs/watchlist.md</code> §3）。</p>
+<hr>
+<h1 class="part" id="第-4-部守る直す">第 4 部　守る・直す</h1>
+<h2 id="第-9-章個人情報を守るための運用">第 9 章　個人情報を守るための運用</h2>
+<h3 id="9-1-実名はどこにあるか">9-1. 実名はどこにあるか</h3>
+<table>
+<thead>
+<tr>
+<th>場所</th>
+<th>実名</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>raw/</code></td>
+<td><strong>あり</strong></td>
+<td>原本そのもの。ここだけです</td>
+</tr>
+<tr>
+<td><code>wiki/</code></td>
+<td>なし</td>
+<td><code>P_001</code> のような記号で書きます</td>
+</tr>
+<tr>
+<td>受付箱</td>
+<td>一時的にあり</td>
+<td>棚へ移れば空になります</td>
+</tr>
+</tbody>
+</table>
+<p><strong>lint がこの境界を検査します。</strong><code>wiki/</code> に実名が混ざると ERROR になり、コミットが止まります。</p>
+<h3 id="9-2-職員一人ひとりの約束">9-2. 職員一人ひとりの約束</h3>
+<ul>
+<li><strong>公開への道を断ってから使う</strong>（→ <a href="#3-3-公開への道を断つ最重要">3-3</a>）</li>
+<li><strong><code>raw/</code> の中身は書き換えない・消さない</strong></li>
+<li><strong>受付箱に置いたものは、棚へ移す。捨てる操作は使わない</strong></li>
+<li><strong>画面共有や研修で見せるときは、<code>記入例/</code> を使う</strong>（架空の利用者です）</li>
+</ul>
+<h3 id="9-3-外部に送られるもの">9-3. 外部に送られるもの</h3>
+<p>Claude に仕分けや照会をお願いすると、<strong>その内容は Anthropic のサーバーへ送られます。</strong>送られるのは、あなたが渡した資料と、Claude が読んだページです。</p>
+<ul>
+<li><strong>無料プランは使えません</strong>（入力内容がサービス改善に用いられうるため）</li>
+<li>事業所としての説明と同意の進め方は、<strong>貴事業所の個人情報の規程に沿ってご判断ください</strong></li>
+</ul>
+<h3 id="9-4-もし情報が漏れたら">9-4. もし情報が漏れたら</h3>
+<p>まず<strong>経路を止める</strong>（公開先を外す、共有を解除する）。次に<strong>何が出たかを特定する</strong>（<code>raw/</code> と <code>wiki/</code> のどちらか、どの範囲か）。そのうえで組織の規程に従って報告してください。<code>raw/</code> は追記専用なので、<strong>何がいつ入ったかは追えます。</strong></p>
+<hr>
+<h2 id="第-10-章トラブルシューティング">第 10 章　トラブルシューティング</h2>
+<h3 id="10-0-まず-claude-に聞いてみる">10-0. まず Claude に聞いてみる</h3>
+<p>エラーの文字が出たら、<strong>意味を考える前に、そのまま Claude に貼り付けてください。</strong>英語でも、長くても、途中で切れていても構いません。</p>
+<blockquote>
+<p>「このエラーが出ました。何が起きていて、次に何をすればよいか教えてください。
+（ここにエラーの文字を貼る）」</p>
+</blockquote>
+<p>filesystem の差込口がつながっていれば、Claude は<strong>実際のファイルを見て確かめられます。</strong></p>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>Claude に見てもらうもの</th>
+<th>頼み方の例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lint が ERROR を出す</td>
+<td>出力全体と、指摘されたページ</td>
+<td>「この ERROR の意味と、直し方を教えてください」</td>
+</tr>
+<tr>
+<td>コミットが止まる</td>
+<td>関所の出力</td>
+<td>「関所に止められました。何が引っかかっていますか」</td>
+</tr>
+<tr>
+<td>ページの書き方が分からない</td>
+<td><code>templates/</code> と <code>記入例/</code></td>
+<td>「記入例を見て、このページの書き方を教えてください」</td>
+</tr>
+<tr>
+<td>何が原因か分からない</td>
+<td>このマニュアル自体</td>
+<td>「導入マニュアルの第 10 章を見ながら、一緒に原因を探してください」</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>ただし、Claude が自分でコマンドを実行することはできません。</strong>読む・調べる・案内するまでです。実行するのはご自身です。これは制限ではなく、<strong>利用者さんの情報が入ったパソコンで、AI が勝手に操作をしないための設計</strong>です。</p>
+</blockquote>
+<h3 id="10-1-まず試すこと">10-1. まず試すこと</h3>
+<p>Obsidian を閉じて開き直す。Claude Desktop を<strong>完全終了</strong>して起動し直す（Mac は <code>command</code> + <code>Q</code>）。多くの不調はこれで直ります。</p>
+<h3 id="10-2-lint-が-error-を出すとき">10-2. lint が ERROR を出すとき</h3>
+<p><strong>出力メッセージが対処を書いています。</strong>まずそこを読んでください。よくある原因は次の 3 つです。</p>
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>直し方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wiki/</code> に実名が入っている</td>
+<td><code>P_001</code> のような記号に置き換える。実名は <code>raw/</code> にだけ置く</td>
+</tr>
+<tr>
+<td>日付や person_id が抜けている</td>
+<td>ページ冒頭の項目を埋める（<code>templates/</code> を見比べる）</td>
+</tr>
+<tr>
+<td>型に無い項目が入っている</td>
+<td><code>templates/</code> の該当ファイルと突き合わせる</td>
+</tr>
+</tbody>
+</table>
+<p>ERROR は<strong>機微情報が漏れる危険がある</strong>ときに出ます。解消するまでコミットは通りません（fail-closed）。これは仕様です。</p>
+<h3 id="10-3-コミットが止まるとき関所">10-3. コミットが止まるとき（関所）</h3>
+<table>
+<thead>
+<tr>
+<th>止まった理由</th>
+<th>直し方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公開先が設定されたまま、個人のページがある</td>
+<td><code>git remote remove origin</code> で経路を断つ（→ <a href="#3-3-公開への道を断つ最重要">3-3</a>）</td>
+</tr>
+<tr>
+<td>lint が ERROR を出している</td>
+<td>上の <a href="#10-2-lint-が-error-を出すとき">10-2</a> を先に</td>
+</tr>
+<tr>
+<td>関所が何も言わずに素通りする</td>
+<td>実行の許可が落ちています。<code>chmod 755 githooks/pre-commit scripts/*.py scripts/*.sh</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>3 行目に注意してください。</strong>関所が「効いていない」ことは、画面に出ません。ZIP でダウンロードした方は、<a href="#3-1-テンプレートを手に入れる">3-1</a> の <code>chmod</code> を一度実行しておくのが安全です。</p>
+</blockquote>
+<h3 id="10-4-claude-がフォルダを見てくれないとき">10-4. Claude がフォルダを見てくれないとき</h3>
+<ol>
+<li><strong>完全終了していない</strong> — いちばん多い原因です。ウィンドウを閉じただけでは終了していません</li>
+<li><strong>フォルダの指定が違う</strong> — パスに打ち間違いがないか、Claude に「いま見えているフォルダを教えてください」と聞く</li>
+<li><strong>受付箱を Vault の中に作ってしまった</strong> — 外に作り直してください（→ <a href="#4-1-受付箱を作る">4-1</a>）</li>
+</ol>
+<h3 id="10-5-それでも解決しないとき">10-5. それでも解決しないとき</h3>
+<p><code>docs/導入手順.md</code> の「困ったとき」と、リポジトリの Issue をご覧ください。<strong>このテンプレートはβ版</strong>で、実務での使い心地は検証の途中です。違和感があれば Issue でお知らせいただけると助かります。</p>
+<hr>
+<h1 class="part" id="付録">付録</h1>
+<h2 id="付録-aフォルダの地図">付録 A　フォルダの地図</h2>
+<pre><code>あなたのVault/
+├── raw/                   原本の置き場（実名あり・追記専用）
+│   ├── 10_本人・家族から
+│   ├── 20_会議
+│   ├── 30_事業所から
+│   ├── 40_後見・法律から
+│   ├── 50_医療から
+│   ├── 60_行政・制度
+│   ├── 70_自分の作成物
+│   └── 90_assets
+├── wiki/                  仮名で書くページ（15 の型）
+├── templates/             ページの雛形
+├── 記入例/                架空の利用者による実例
+├── docs/                  手順書・点検表・制度ウォッチ台帳
+├── scripts/               lint など
+├── githooks/              関所
+├── index.md               全ページのカタログ
+└── CLAUDE.md              Claude への指示書
+
+デスクトップ/
+└── 受付箱/                ← ここに置くだけ（Vault の外）
+</code></pre>
+<h2 id="付録-bページの型-一覧">付録 B　ページの型 一覧</h2>
+<table>
+<thead>
+<tr>
+<th>型</th>
+<th>何を書くか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>person</td>
+<td>本人のページ。人物の中心</td>
+</tr>
+<tr>
+<td>plan</td>
+<td>サービス等利用計画</td>
+</tr>
+<tr>
+<td>monitoring</td>
+<td>モニタリング</td>
+</tr>
+<tr>
+<td>meeting</td>
+<td>サービス担当者会議など</td>
+</tr>
+<tr>
+<td>trial</td>
+<td>試したこと・その結果</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>引き金（何が起きると、どうなるか）</td>
+</tr>
+<tr>
+<td>protocol</td>
+<td>手順書（こうする、と決めたこと）</td>
+</tr>
+<tr>
+<td>procedure</td>
+<td>事務手続きの段取り</td>
+</tr>
+<tr>
+<td>ecomap</td>
+<td>支援の輪の図</td>
+</tr>
+<tr>
+<td>sensitive</td>
+<td>機微情報（性・触法・行動障害など）</td>
+</tr>
+<tr>
+<td>review</td>
+<td>再確認の記録</td>
+</tr>
+<tr>
+<td>query</td>
+<td>調べたいこと</td>
+</tr>
+<tr>
+<td>entity</td>
+<td>事業所・機関など</td>
+</tr>
+<tr>
+<td>public-system</td>
+<td>公的制度</td>
+</tr>
+<tr>
+<td>concept</td>
+<td>一般概念</td>
+</tr>
+</tbody>
+</table>
+<h2 id="付録-c用語集">付録 C　用語集</h2>
+<table>
+<thead>
+<tr>
+<th>ことば</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vault</strong></td>
+<td>Obsidian が扱うフォルダ 1 つ分。ここでは記録の入れ物</td>
+</tr>
+<tr>
+<td><strong>受付箱</strong></td>
+<td>資料をいったん置く、Vault の外のフォルダ。原本の唯一の入口</td>
+</tr>
+<tr>
+<td><strong>MCP（差込口）</strong></td>
+<td>Claude とパソコンのフォルダをつなぐ仕組み</td>
+</tr>
+<tr>
+<td><strong>lint</strong></td>
+<td>型の検査。実名の混入や項目の欠落を機械的に見つける</td>
+</tr>
+<tr>
+<td><strong>関所（pre-commit）</strong></td>
+<td>危ないコミットを止める仕掛け</td>
+</tr>
+<tr>
+<td><strong>追記専用</strong></td>
+<td>足すことはできるが、書き換えも削除もしない、という決まり</td>
+</tr>
+<tr>
+<td><strong>仮名化</strong></td>
+<td>実名を <code>P_001</code> のような記号に置き換えること</td>
+</tr>
+<tr>
+<td><strong>仕分けの宣言</strong></td>
+<td>Claude が「これはこう扱います」と先に示すこと。違っていれば訂正できる</td>
+</tr>
+</tbody>
+</table>
+<h2 id="付録-d関連ドキュメント">付録 D　関連ドキュメント</h2>
+<table>
+<thead>
+<tr>
+<th>文書</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/導入手順.md</code></td>
+<td>短い版（約 30 分）。手順だけを追いたい方へ</td>
+</tr>
+<tr>
+<td><code>docs/支援の輪の確認事項.md</code></td>
+<td>支援の輪の点検表（7 章 31 項目）</td>
+</tr>
+<tr>
+<td><code>docs/watchlist.md</code></td>
+<td>制度ウォッチの台帳</td>
+</tr>
+<tr>
+<td><code>CLAUDE.md</code></td>
+<td>Claude への指示書。§2〜§3 に運用の中身</td>
+</tr>
+<tr>
+<td><code>purpose.md</code></td>
+<td>この仕組みが何のためにあるか</td>
+</tr>
+<tr>
+<td><code>schema.md</code></td>
+<td>ページの型の詳細</td>
+</tr>
+<tr>
+<td><code>記入例/0_この記入例について.md</code></td>
+<td>記入例の読み方</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="この版で確かめてあることいないこと">この版で確かめてあること・いないこと</h2>
+<ul>
+<li><strong>確かめてある</strong>: ページの型・必須項目・機微情報の扱いが機械検査を通ること。日付や person_id が欠けたら止まること（実際に壊して確認しています）</li>
+<li><strong>確かめていない</strong>: 問いの立て方が実務の呼吸に合うか、語彙が現場の言い方と合っているか、計画・モニタリングの周期に無理なく乗るか</li>
+</ul>
+<p><strong>仕組みは検証済み・実務適合は未検証</strong>です。現役の相談支援専門員のレビューを依頼しています。使ってみて違和感があれば、Issue でお知らせいただけると助かります。</p>
+<hr>
+<p><em>β版 2026-08-12 ／ 親なき後の支援 ／ 特定非営利活動法人 nest ／ MIT License</em></p>
+<footer class="doc">
+  記録テンプレート（oya-inai-keikaku-soudan）— MIT License.
+  最新版は <a href="https://github.com/kazumasakawahara/oya-inai-keikaku-soudan">GitHub リポジトリ</a> をご確認ください。
+</footer>
+</div>
+</body>
+</html>
