@@ -25,6 +25,7 @@ related:
   - "[[E_北九州市障害福祉センター]]"
   - "[[E_北九州市障害者基幹相談支援センター]]"
   - "[[C_ダウン症成人診療ガイドライン_GLOBAL]]"
+  - "[[C_向精神薬の適正処方_STOMP]]"
 status: active
 sensitivity: public
 concept_category: welfare-law

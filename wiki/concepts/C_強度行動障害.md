@@ -14,6 +14,7 @@ related:
   - "[[C_合理的配慮]]"
   - "[[CD_意思決定支援]]"
   - "[[PS_障害福祉サービス体系]]"
+  - "[[C_向精神薬の適正処方_STOMP]]"
 status: active
 sensitivity: public
 concept_category: behavioral
