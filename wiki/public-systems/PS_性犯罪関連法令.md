@@ -15,6 +15,7 @@ related:
   - "[[PC_性被害時の対応フロー]]"
   - "[[PS_障害者虐待防止法]]"
   - "[[PS_障害者差別解消法]]"
+  - "[[C_性教育の基礎]]"
 status: active
 sensitivity: public
 system_category: welfare

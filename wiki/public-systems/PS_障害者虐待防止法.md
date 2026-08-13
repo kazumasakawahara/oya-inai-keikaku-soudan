@@ -18,6 +18,7 @@ related:
   - "[[CD_意思決定支援]]"
   - "[[CD_食と権利擁護]]"
   - "[[E_北九州市障害者基幹相談支援センター]]"
+  - "[[C_性教育の基礎]]"
 status: active
 sensitivity: public
 system_category: welfare

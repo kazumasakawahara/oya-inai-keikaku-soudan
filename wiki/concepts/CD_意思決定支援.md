@@ -21,6 +21,8 @@ related:
   - "[[C_ダウン症の体質と健康管理]]"
   - "[[C_包括的医療と移行医療]]"
   - "[[C_ダウン症と急激退行]]"
+  - "[[C_向精神薬の適正処方_STOMP]]"
+  - "[[C_性教育の基礎]]"
 status: active
 sensitivity: public
 concept_category: decision-rights
