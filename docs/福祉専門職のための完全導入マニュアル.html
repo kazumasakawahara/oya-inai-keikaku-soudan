@@ -132,7 +132,7 @@
 <td>アプリのインストール（管理者パスワードの入力）</td>
 </tr>
 <tr>
-<td><code>CLAUDE.md</code> をあなたの環境に合わせて書き換える</td>
+<td><code>AGENTS.md</code>（Claude への指示書）をあなたの環境に合わせて確認する</td>
 <td>ライセンスの同意ボタンを押す</td>
 </tr>
 <tr>
@@ -398,12 +398,12 @@ python3 scripts/okf_lint.py
 </code></pre>
 <p><strong>「違反なし」</strong>と出れば、骨格は健全です。追加のインストールは要りません（Python 3 の標準機能だけで動きます）。</p>
 <p><strong>なぜ必要？</strong> — この検査は、<strong>実名の混入や、日付・ID の欠落を機械的に見つけます。</strong>人の注意力に頼らずに済ませるための仕掛けです。ERROR が出た状態ではコミットが通りません。</p>
-<h3 id="5-2-claudemd-をあなたの環境に合わせる">5-2. <code>CLAUDE.md</code> をあなたの環境に合わせる</h3>
-<p><code>CLAUDE.md</code> は Claude への指示書です。作者の環境を前提にした節が含まれているので、あなたの環境に合わせて調整してください。</p>
+<h3 id="5-2-agentsmd-をあなたの環境に合わせる">5-2. <code>AGENTS.md</code> をあなたの環境に合わせる</h3>
+<p><code>AGENTS.md</code> は Claude への指示書です（Vault の中の <code>CLAUDE.md</code> は「AGENTS.md を読んでください」とだけ書いた入口なので、直す必要はありません）。本則はどの AI でも動く書き方になっていて、環境に依存することは末尾の <strong>§6 環境依存の付録</strong> にだけ書いてあります。</p>
 <blockquote>
-<p><strong>これは Claude に頼めます。</strong>「CLAUDE.md を私の環境に合わせて調整してください。Neo4j は使いません」のように伝えれば、一括で直してくれます。</p>
+<p><strong>これは Claude に頼めます。</strong>「AGENTS.md §6 を私の環境に合わせて確認してください。Neo4j は使いません」のように伝えれば、確認してくれます。</p>
 </blockquote>
-<p>調整するのは次の 4 か所です。</p>
+<p>確認するのは次の 3 点です。</p>
 <table>
 <thead>
 <tr>
@@ -413,20 +413,16 @@ python3 scripts/okf_lint.py
 </thead>
 <tbody>
 <tr>
-<td>§9 Neo4j 支援DBとの連携</td>
-<td>使わなければ「該当なし」と明記</td>
+<td>ファイル操作の作法</td>
+<td>Claude が Vault のファイルを直接読み書きできる状態か（4-2 で見せた3つのフォルダ）</td>
 </tr>
 <tr>
-<td>§10 既存スキルとの連携</td>
-<td>あなたの環境にあるものだけ残す</td>
+<td>支援DB（Neo4j）連携</td>
+<td>使わなければ何もしない（単独運用が既定です）</td>
 </tr>
 <tr>
-<td>§14 ファイル操作ツールの選択原則</td>
-<td>あなたの AI 環境の流儀に置き換え</td>
-</tr>
-<tr>
-<td>冒頭の Vault パス表記</td>
-<td>あなたの Vault 名に置き換え</td>
+<td>AI の学習利用ポリシー</td>
+<td>機微情報を扱うので、採用する AI の学習オプトアウト設定を確認する</td>
 </tr>
 </tbody>
 </table>
@@ -499,6 +495,7 @@ python3 scripts/okf_lint.py
 ③ 違っていれば訂正する
 </code></pre>
 <p>それだけです。<strong>原本は自動で <code>raw/</code> の棚へ移り、受付箱は空に戻ります。</strong>捨てる操作は要りません。</p>
+<p><strong>ファイルを作らず、チャットに直接書いてもかまいません。</strong>面談で聞いた話をそのまま貼る、口頭で伝える、ファイルを添付する——どれでも、Claude がまず<strong>受付箱に原本のファイルを起こし</strong>（日付・出所・「チャットで受け取った」旨を先頭に書き、本文は言い換えずに写します）、そのあとは①〜③と同じ道を通ります。あなたが受付箱に置いたのと同じ扱いになるので、原本はつねに1つ、あとから元の言葉に戻れます。</p>
 <h3 id="7-2-書き分けの原則">7-2. 書き分けの原則</h3>
 <table>
 <thead>
@@ -601,6 +598,7 @@ python3 scripts/okf_lint.py
 <li><strong><code>raw/</code> の中身は書き換えない・消さない</strong></li>
 <li><strong>受付箱に置いたものは、棚へ移す。捨てる操作は使わない</strong></li>
 <li><strong>画面共有や研修で見せるときは、<code>記入例/</code> を使う</strong>（架空の利用者です）</li>
+<li><strong>うまくいかなかった対応も書く。</strong> 失敗を記録することへの抵抗は誰にでもあります。けれど次の支援者を救うのは、うまくいった記録より「なぜダメだったか」の記録です。互いに励まし合いながら書いてください</li>
 </ul>
 <h3 id="9-3-外部に送られるもの">9-3. 外部に送られるもの</h3>
 <p>Claude に仕分けや照会をお願いすると、<strong>その内容は Anthropic のサーバーへ送られます。</strong>送られるのは、あなたが渡した資料と、Claude が読んだページです。</p>
@@ -734,7 +732,8 @@ python3 scripts/okf_lint.py
 ├── scripts/               lint など
 ├── githooks/              関所
 ├── index.md               全ページのカタログ
-└── CLAUDE.md              Claude への指示書
+├── AGENTS.md              Claude への指示書（正典）
+└── CLAUDE.md              AGENTS.md へ誘導する入口
 
 デスクトップ/
 └── 受付箱/                ← ここに置くだけ（Vault の外）
@@ -875,8 +874,8 @@ python3 scripts/okf_lint.py
 <td>制度ウォッチの台帳</td>
 </tr>
 <tr>
-<td><code>CLAUDE.md</code></td>
-<td>Claude への指示書。§2〜§3 に運用の中身</td>
+<td><code>AGENTS.md</code></td>
+<td>Claude への指示書（正典）。§2〜§3 に運用の中身。<code>CLAUDE.md</code> はここへ誘導する入口</td>
 </tr>
 <tr>
 <td><code>purpose.md</code></td>

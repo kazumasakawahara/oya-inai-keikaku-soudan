@@ -3,7 +3,7 @@
 # 検証後は必ず元の状態へ戻す（trap でクリーンアップを保証）。
 # 前提: 作業ツリーがクリーンであること（コミット済み）。git reset --hard を使う。
 # 対象: このスクリプトが置かれたリポジトリ自身（配布テンプレート）。
-#       作者の実運用 Vault へは cd しない（旧版は ~/Obsidian/oya-inai-wiki を巻き戻していた）。
+#       作者の実運用 Vault へは cd しない（旧版は作者の実運用 Vault を巻き戻していた）。
 # 骨組み: oya-iru-wiki/scripts/test_precommit.sh（2026-08-13 版。日本語の棚名で関所1を試す）
 cd "$(dirname "$0")/.." || exit 1
 

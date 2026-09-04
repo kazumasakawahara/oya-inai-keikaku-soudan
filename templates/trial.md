@@ -19,9 +19,9 @@ context: ""
 
 # {{要約タイトル}}
 
-> Trial は entity や concept と同等の一級市民です（CLAUDE.md §0-2）。
+> Trial は entity や concept と同等の一級市民です（purpose.md §3-2）。
 > 失敗 Trial こそ詳細に記録します。「なぜダメだったか」が次の支援者を救います。
-> `decision-rights-learning` サブドメインでは、本人を加害リスクのある対象として記述しないこと（CLAUDE.md §2-12）。
+> `decision-rights-learning` サブドメインでは、本人を加害リスクのある対象として記述しないこと（AGENTS.md §2-12）。
 
 ## 状況
 

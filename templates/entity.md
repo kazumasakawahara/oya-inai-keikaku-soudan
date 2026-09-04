@@ -16,7 +16,6 @@ contact_info_ref: "raw/legal/contacts.md"
 # {{組織・機関名}}
 
 > Entity ページは公開情報を扱います。連絡先・担当者個人名等は `raw/` に置き、ここでは参照のみ。
-> `provider-search` / `wamnet-provider-sync` スキルと連携可能（CLAUDE.md §10）。
 
 ## 概要
 

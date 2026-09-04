@@ -16,7 +16,7 @@ person_id: "P_XXX"   # 特定 Person に関する問いの場合
 
 # Q: {{問いの一行サマリ}}
 
-> Query ページは `query` モードでの問いと回答を保存し、後の ingest で他ページから参照可能にします（CLAUDE.md §3-2）。
+> Query ページは `query` モードでの問いと回答を保存し、後の ingest で他ページから参照可能にします（AGENTS.md §3-2）。
 
 ## 問い
 

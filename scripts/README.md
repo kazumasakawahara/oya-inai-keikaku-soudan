@@ -46,7 +46,7 @@
 ## 使い方
 
 ```bash
-cd ~/Obsidian/oya-inai-wiki
+cd <Vault のディレクトリ>
 
 python3 scripts/okf_lint.py              # 全チェック（内訳・配布可能件数つき）
 python3 scripts/okf_lint.py --gate       # 機微ゲートのみ。CI / フック用
@@ -62,14 +62,37 @@ python3 scripts/okf_lint.py --allowlist  # 外部配布可能ファイルの一�
 
 **出所と宛先（schema.md §1、2026-08-09 再設計で追加）**: `provided_by`（8値）と `share_scope`（team / consent-required / origin-only）の語彙を WARN 検査。**`share_scope: origin-only` のページは sensitivity によらず `--allowlist` から無条件除外**（fail-closed）。
 
+### 検査項目一覧（正典）
+
+AGENTS.md §3-3 はこの一覧を参照する。schema.md §1〜§6・schema-common.md §A〜§C の宣言に対応する。
+
+| 区分 | 検査 | 重さ |
+|------|------|------|
+| フロントマター | 必須7項目（`type` / `created` / `updated` / `sources` / `tags` / `status` / `sensitivity`）の欠損 | ERROR |
+| フロントマター | `type` / `status` / `sensitivity` の値が定義域内にあるか | ERROR |
+| 配置 | `type` と配置ディレクトリの一致（schema.md §5） | ERROR |
+| 機微ゲート | 個人に紐づく型（person / trial / protocol / trigger / ecomap / sensitive / plan / monitoring / meeting）が `sensitivity: public` を名乗っていないか | ERROR |
+| 機微ゲート | 相談支援の中核文書3型（plan / monitoring / meeting）の sensitive 強制・日付必須（planned_on / monitored_on / held_on）・person_id(s) 必須 | ERROR |
+| 機微ゲート | `person_id` を持つページが `public` になっていないか | ERROR |
+| 機微ゲート | `restricted` が `wiki/sensitive/restricted/` 配下にあるか | ERROR |
+| 機微ゲート | `sensitive` 以上に `sensitive_purpose` が明記されているか | ERROR |
+| 機微ゲート | 本文への PII 混入（携帯番号・生年月日・手帳番号・受給者証番号・住居表示） | ERROR |
+| 出所と宛先 | `provided_by` / `share_scope` の語彙（schema.md §1）。`share_scope: origin-only` は sensitivity によらず `--allowlist` から無条件除外 | WARN／除外 |
+| 時点の2軸 | `valid_from` ＞ `valid_until`、`valid_from` ＞ `created`、`valid_until` ありで `status: active`、終了理由（`superseded_by` / `valid_until_reason`）なし、`superseded_by` の指し先不在・指す側が stale でない（schema-common.md §C-3） | ERROR |
+| 時点の2軸 | `contradicts` で指されたのに `valid_until` が空 | WARN |
+| 鮮度 | 現在の主張型（person / protocol / trigger / sensitive / ecomap、`status: active|review`）の `last_confirmed` 欠落、型別の目安超過（person・protocol 90日 / trigger・sensitive 180日 / ecomap 30日）、`confirmed_by` の未定義値。`valid_until` が書かれたページは対象外（schema-common.md §B） | WARN |
+| 制度 | `public-system` の `last_updated_law` 欠損（法改正追従用）、`verified_on` 365日超（制度ウォッチの点検漏れ） | WARN |
+
+ERROR は `--gate` の終了コード `2` に反映され、pre-commit と起動時ゲートを止める。WARN は止めない（三分法。schema-common.md §B-4）。`--allowlist` は `sensitivity: public` かつ `status: active|review` のページのみを返し、ERROR が1件でも出たページは無条件で除外する（fail-closed）。
+
 ### 実行されるタイミング
 
 | 契機 | 何が走るか | 定義場所 |
 |------|-----------|---------|
-| セッション起動時 | `--gate` | CLAUDE.md §13 手順5 |
-| lint モード | 全チェック → その後 Claude が読解点検 | CLAUDE.md §3-3 |
+| セッション起動時 | `--gate` | AGENTS.md §5 手順5 |
+| lint モード | 全チェック → その後 AI が読解点検 | AGENTS.md §3-3 |
 | `git commit` | 3関所（下記） | `githooks/pre-commit` |
-| LightRAG へ derive する前 | `--allowlist` の範囲のみ | `~/.claude/skills/wiki-feed-derive/SKILL.md` |
+| 外部の検索基盤・法人サイト・職員配布へ渡す前 | `--allowlist` の範囲のみ | AGENTS.md §3-3 外部配布ゲート・docs/連携.md §4 |
 
 ### pre-commit の3関所
 
@@ -125,7 +148,7 @@ zsh     scripts/test_precommit.sh  # 関所の動作テスト（5ケース。cle
    `git add` の後にファイルを書き換えると、検査対象とコミット内容がずれる可能性がある
 2. **日本語の人名は検出できない。** 「田中太郎」は正規表現からは通常の文字列と区別がつかない。
    パターン検出は補助であり、**主防御は `sensitivity` の宣言と `person_id` 運用**である
-3. **起動時ゲートは Claude が CLAUDE.md §13 に従うことに依存する。**
+3. **起動時ゲートは AI が AGENTS.md §5 に従うことに依存する。**
    Obsidian で人が直接編集する分には効かない。確実に効くのは commit 時のみ
 4. **`restricted` の暗号化やアクセス制御はしていない。** 配置と宣言の整合を検査するだけ
 

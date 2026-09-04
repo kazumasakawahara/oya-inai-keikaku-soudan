@@ -171,7 +171,7 @@ concept_category: decision-rights
 
 ### Trial 記録のテンプレート
 
-食を巡る Trial（CLAUDE.md §4-2 trial type）は、daily-life または decision-rights-learning サブドメインで記録。以下の観点を含めると検証しやすい:
+食を巡る Trial（schema.md §2-2 trial 型）は、daily-life または decision-rights-learning サブドメインで記録。以下の観点を含めると検証しやすい:
 
 - **状況**: 何が起きていたか（時刻・場所・直前の出来事・本人の様子）
 - **試したこと**: 具体的な対応（誰が、どのような言葉・身振り・道具を使ったか）

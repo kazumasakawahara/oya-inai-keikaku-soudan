@@ -9,12 +9,15 @@ test_core_docs.py — 相談支援の中核文書3型（plan / monitoring / meet
 担保すること:
   - 正しい3型のページが「通る」（機能が存在しないときにテストが合格しない担保）
   - sensitivity 不足・日付欠落・person_id(s) 欠落・配置違反・public 偽装が「止まる」
+  - 配布物全体で「CLAUDE.md §N-M」「AGENTS.md §N-M」の参照先が実在する（2026-09-05 柱5で追加。
+    操作文書の減量で節が移動・消滅したとき、他の文書からの参照が宙に浮くのを止める）
 
 使い方:
     python3 scripts/test_core_docs.py
 """
 
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -83,6 +86,101 @@ CASES = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# 参照先検査: 配布物のどこかに書かれた「CLAUDE.md §N-M」「AGENTS.md §N」が、
+# 実際にその文書の節（## §N）・小節（### N-M）・節内の番号付き項目（N. …）として
+# 存在するかを確かめる。開発メタ文書（HANDOVER / docs/phase-common-* / release.sh）は
+# 過去の節番号を歴史として持つので対象外。
+# ---------------------------------------------------------------------------
+ROOT = os.path.dirname(HERE)
+TARGETS = ("CLAUDE.md", "AGENTS.md")
+EXCLUDE_RE = re.compile(r"^(HANDOVER\.md|docs/phase-common-|scripts/release\.sh)")
+SKIP_DIRS = {".git", "raw", ".obsidian", "node_modules", "__pycache__"}
+TEXT_EXT = {".md", ".py", ".sh", ".html", ".txt", ".yaml", ".yml", ".json", ""}
+FILE_TOKEN = re.compile(r"[\w.-]+\.md")
+SEC_TOKEN = re.compile(r"§(\d+)(?:-(\d+[a-z]?))?")
+
+
+def section_map(path):
+    """文書の見出し集合を返す: {'3', '3-1', '2-7', ...}"""
+    have = set()
+    current = None
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            m = re.match(r"^## §(\d+)", line)
+            if m:
+                current = m.group(1)
+                have.add(current)
+                continue
+            m = re.match(r"^### (\d+)-(\d+[a-z]?)", line)
+            if m:
+                have.add(f"{m.group(1)}-{m.group(2)}")
+                continue
+            m = re.match(r"^\s*(\d+)\.\s", line)
+            if m and current:
+                have.add(f"{current}-{m.group(1)}")
+    return have
+
+
+def iter_dist_files():
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+        for name in filenames:
+            full = os.path.join(dirpath, name)
+            rel = os.path.relpath(full, ROOT)
+            if EXCLUDE_RE.match(rel):
+                continue
+            if os.path.splitext(name)[1] not in TEXT_EXT:
+                continue
+            yield rel, full
+
+
+def refs_in_line(line, self_name):
+    """行の中の § 参照を、直前に現れた .md ファイル名に帰属させて返す。
+    ファイル名が無ければ self_name（その行を含む文書自身）への参照とみなす。"""
+    out = []
+    owner = self_name
+    pos = 0
+    events = sorted(
+        [(m.start(), "file", m.group(0)) for m in FILE_TOKEN.finditer(line)]
+        + [(m.start(), "sec", m) for m in SEC_TOKEN.finditer(line)]
+    )
+    for _, kind, val in events:
+        if kind == "file":
+            owner = os.path.basename(val)
+        elif owner in TARGETS:
+            sec = val.group(1) + (f"-{val.group(2)}" if val.group(2) else "")
+            out.append((owner, sec))
+    return out
+
+
+def check_section_refs():
+    maps = {}
+    for name in TARGETS:
+        path = os.path.join(ROOT, name)
+        if os.path.exists(path):
+            maps[name] = section_map(path)
+    failures = []
+    checked = 0
+    for rel, full in iter_dist_files():
+        self_name = os.path.basename(rel) if os.path.basename(rel) in TARGETS else None
+        try:
+            with open(full, encoding="utf-8") as f:
+                lines = f.read().splitlines()
+        except (UnicodeDecodeError, OSError):
+            continue
+        for i, line in enumerate(lines, 1):
+            if self_name is None and not any(t in line for t in TARGETS):
+                continue
+            for owner, sec in refs_in_line(line, self_name):
+                checked += 1
+                if owner not in maps:
+                    failures.append(f"{rel}:{i}: {owner} が存在しない（§{sec} を参照）")
+                elif sec not in maps[owner]:
+                    failures.append(f"{rel}:{i}: {owner} §{sec} が存在しない")
+    return checked, failures
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="core_docs_test_")
     try:
@@ -122,9 +220,18 @@ def main():
         print("  - 正しい3型のページが通る")
         print("  - 日付フィールド欠落で止まる（時系列を追えなくなるため）")
         print("  - person_id / person_ids 欠落・配置違反・sensitive 未満・public 偽装で止まる")
-        return 0
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+    print("=== 操作文書の節参照テスト（CLAUDE.md § / AGENTS.md §） ===")
+    checked, ref_failures = check_section_refs()
+    if ref_failures:
+        for f in ref_failures:
+            print(f"  FAIL  {f}")
+        print(f"\n{len(ref_failures)} 件の参照先が存在しない（{checked} 件検査）")
+        return 1
+    print(f"  {checked} 件の参照がすべて実在する節を指している")
+    return 0
 
 
 if __name__ == "__main__":
