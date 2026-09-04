@@ -7,6 +7,7 @@
 # 機械的なゲートを通す。ゲートを通らないコミットは作らせない。
 #
 # 設置: 2026-07-26 / 関連: schema.md §2-7, CLAUDE.md §3-3, §13
+# 改訂: 2026-09-04 core.quotepath=false（日本語パスの穴）・棚 README の許可
 # =====================================================================
 
 set -e
@@ -22,7 +23,11 @@ fail() {
 # --- 関所1: raw/ の混入 ----------------------------------------------
 # .gitignore で除外しているが、git add -f で貫通できてしまう。
 # raw/ は実名・連絡先・原本資料の層なので、いかなる経路でも履歴に入れない。
-STAGED_RAW=$(git diff --cached --name-only --diff-filter=ACM | grep '^raw/' || true)
+# 棚の README だけは骨格として許可する（.gitignore の !raw/*/README.md と対応）。
+# core.quotepath=false: 日本語の棚名（raw/50_医療から/ 等）がエスケープされて
+# grep '^raw/' をすり抜けるのを防ぐ（親いる版 2026-08-13 の関所テストで検出した穴。
+# 本リポでは 2026-09-04 に test_precommit.sh で再現して修正）
+STAGED_RAW=$(git -c core.quotepath=false diff --cached --name-only --diff-filter=ACM | grep '^raw/' | grep -v '^raw/[^/]*/README\.md$' || true)
 if [ -n "$STAGED_RAW" ]; then
     fail "raw/ 配下のファイルがステージされています。ここは実名・連絡先を置く層で、
 git 履歴に入れてはいけません（一度入ると削除が極めて困難）。
@@ -38,8 +43,8 @@ fi
 # そこで「remote があり、かつ個人に紐づくページが存在する」ときだけ止める。
 # 実データの運用に入ったら remote を外すか private に切り替えること。
 if [ -n "$(git remote)" ]; then
-    PERSONAL=$(git ls-files 'wiki/persons/*.md' 'wiki/plans/*.md' 'wiki/monitorings/*.md' 'wiki/meetings/*.md' 'wiki/trials/*.md' 'wiki/protocols/*.md' 'wiki/triggers/*.md' 'wiki/ecomaps/*.md' 'wiki/sensitive/*.md' 'wiki/sensitive/restricted/*.md' 2>/dev/null || true)
-    STAGED_PERSONAL=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^wiki/(persons|plans|monitorings|meetings|trials|protocols|triggers|ecomaps|sensitive)/' || true)
+    PERSONAL=$(git -c core.quotepath=false ls-files 'wiki/persons/*.md' 'wiki/plans/*.md' 'wiki/monitorings/*.md' 'wiki/meetings/*.md' 'wiki/trials/*.md' 'wiki/protocols/*.md' 'wiki/triggers/*.md' 'wiki/ecomaps/*.md' 'wiki/sensitive/*.md' 'wiki/sensitive/restricted/*.md' 2>/dev/null || true)
+    STAGED_PERSONAL=$(git -c core.quotepath=false diff --cached --name-only --diff-filter=ACM | grep -E '^wiki/(persons|plans|monitorings|meetings|trials|protocols|triggers|ecomaps|sensitive)/' || true)
     if [ -n "$PERSONAL" ] || [ -n "$STAGED_PERSONAL" ]; then
         fail "remote が設定された状態で、個人に紐づくページをコミットしようとしています。
 

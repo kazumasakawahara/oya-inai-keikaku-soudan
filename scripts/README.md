@@ -86,8 +86,12 @@ python3 scripts/okf_lint.py --allowlist  # 外部配布可能ファイルの一�
 python3 scripts/test_okf_core.py   # 共通検査 okf_core.py の回帰テスト（25ケース＋4シナリオ。姉妹 Vault と同一内容）
 python3 scripts/test_okf_lint.py   # lint の回帰テスト（23ケース＋ゲート挙動）
 python3 scripts/test_core_docs.py  # 相談支援中核文書3型（plan/monitoring/meeting）のゲートテスト（9ケース）
-zsh     scripts/test_precommit.sh  # 関所の動作テスト（4ケース）
+zsh     scripts/test_precommit.sh  # 関所の動作テスト（5ケース。clean tree 必須——git reset --hard を使う）
 ```
+
+> `test_precommit.sh` は日本語名の raw 棚（raw/50_医療から/）にダミーを置いて関所1を試す。
+> `core.quotepath` が既定のままだと git が日本語パスをエスケープして `grep '^raw/'` を
+> すり抜ける穴があり（2026-09-04 に本テストで再現・修正）、この1ケースがその再発を止める。
 
 > **okf_core.py / test_okf_core.py を直したら姉妹 Vault へも同じ内容を届けること。**
 > 片方だけ変えると、反対側の `scripts/release.sh` がハッシュ照合で「共通部分がずれています」と言う。
