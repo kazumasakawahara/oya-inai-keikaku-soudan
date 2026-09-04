@@ -26,8 +26,10 @@
   ① 宣言        schema.md §2-7 / §5 / §7
                  何が正しいかを定義する。人間が読む
                           ↓
-  ② 検証        scripts/okf_lint.py
+  ② 検証        scripts/okf_lint.py（＋ scripts/okf_core.py）
                  宣言どおりかを機械が確かめる。exit code で答える
+                 okf_core.py は姉妹 Vault（oya-iru-wiki）と同一内容の共通検査。
+                 正本は本リポ。okf_lint.py は本 Vault 固有の型・語彙・検査だけを持つ
                           ↓
   ③ 強制        githooks/pre-commit
                  検証を通らないコミットを作らせない
@@ -81,10 +83,14 @@ python3 scripts/okf_lint.py --allowlist  # 外部配布可能ファイルの一�
 ## テスト
 
 ```bash
-python3 scripts/test_okf_lint.py   # lint の回帰テスト（21ケース＋ゲート挙動）
+python3 scripts/test_okf_core.py   # 共通検査 okf_core.py の回帰テスト（25ケース＋4シナリオ。姉妹 Vault と同一内容）
+python3 scripts/test_okf_lint.py   # lint の回帰テスト（23ケース＋ゲート挙動）
 python3 scripts/test_core_docs.py  # 相談支援中核文書3型（plan/monitoring/meeting）のゲートテスト（9ケース）
 zsh     scripts/test_precommit.sh  # 関所の動作テスト（4ケース）
 ```
+
+> **okf_core.py / test_okf_core.py を直したら姉妹 Vault へも同じ内容を届けること。**
+> 片方だけ変えると、反対側の `scripts/release.sh` がハッシュ照合で「共通部分がずれています」と言う。
 
 > `test_guardian_types.py` は 2026-08-09 の再設計（法律職4型の削除）に伴い廃止し、
 > `test_core_docs.py` へ委譲するスタブになっている。次回の git 整理時に `git rm` してよい。
@@ -122,8 +128,8 @@ zsh     scripts/test_precommit.sh  # 関所の動作テスト（4ケース）
 ## 変更するときの手順
 
 1. `schema.md` を直す（何が正しいかの根拠は常にここ）
-2. `okf_lint.py` を追随させる
-3. `test_okf_lint.py` に**その変更を捉えるケースを追加**する
+2. `okf_lint.py` を追随させる。両 Vault に共通する検査なら `okf_core.py`（正本は本リポ。姉妹 Vault へ同じ内容を届ける）
+3. `test_okf_lint.py`（共通検査なら `test_okf_core.py`）に**その変更を捉えるケースを追加**する
 4. 両方のテストを走らせる
 5. `log.md` に経緯を残す（判断の理由を含めて。「何をしたか」だけでは後で再検討できない）
 

@@ -22,6 +22,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LINT = os.path.join(HERE, "okf_lint.py")
+CORE = os.path.join(HERE, "okf_core.py")   # okf_lint.py が import する共通核。一緒にコピーする
 
 FM = """---
 type: {type}
@@ -87,6 +88,7 @@ def main():
     try:
         os.makedirs(os.path.join(tmp, "scripts"))
         shutil.copy(LINT, os.path.join(tmp, "scripts", "okf_lint.py"))
+        shutil.copy(CORE, os.path.join(tmp, "scripts", "okf_core.py"))
         for relpath, content, _ in CASES:
             full = os.path.join(tmp, relpath)
             os.makedirs(os.path.dirname(full), exist_ok=True)
