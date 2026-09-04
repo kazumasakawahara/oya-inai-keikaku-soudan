@@ -13,6 +13,10 @@ person_id: "P_XXX"
 sensitive_domain: sexuality   # sexuality | criminal-risk-prevention | severe-behavior | trauma | others-rights-learning-difficulty
 sensitive_purpose: ""   # 必ず明記すること
 access_note: "本人を支援する立場にある者のみ閲覧"
+# 時点の2軸（任意。schema-common.md §C）。使うときは行頭の # を外す。値の後ろに # のコメントを書かない（lint が値の一部として読む）
+# valid_from: YYYY-MM-DD
+# valid_until: YYYY-MM-DD
+# valid_until_reason: ""
 ---
 
 # {{タイトル}}

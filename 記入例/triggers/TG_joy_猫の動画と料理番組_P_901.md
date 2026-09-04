@@ -17,6 +17,7 @@ trigger_type: joy
 trigger_modality: visual
 intensity: medium
 last_confirmed: 2026-05-20
+valid_from: 2026-05-20
 confirmed_by: 家族に確認
 provided_by: 家族
 share_scope: team

@@ -18,6 +18,7 @@ trigger_type: distress
 trigger_modality: social
 intensity: medium
 last_confirmed: 2026-08-05
+valid_from: 2026-08-05
 confirmed_by: 支援者に確認
 provided_by: 事業所
 share_scope: team

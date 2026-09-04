@@ -18,6 +18,7 @@ trigger_type: distress
 trigger_modality: auditory
 intensity: high
 last_confirmed: 2026-08-05
+valid_from: 2026-04-15
 confirmed_by: 支援者に確認
 provided_by: 家族
 share_scope: team

@@ -1,15 +1,17 @@
 # schema — 構造ルール
 
-このファイルは Vault の構造ルール（フロントマター仕様・ページ型・Sensitivity Level・命名規約・鮮度）を定義します。CLAUDE.md §4・§7・§8 を抽出した独立ドキュメントです。CLAUDE.md と矛盾が生じた場合は CLAUDE.md を優先し、本ファイルを更新してください。
+このファイルは Vault の構造ルール（フロントマター仕様・ページ型・Sensitivity Level・命名規約・鮮度）を定義します。CLAUDE.md §4・§7・§8 を抽出した独立ドキュメントです。 姉妹 Vault（oya-iru-wiki）と共通の定義（フロントマター・鮮度・時点の2軸）は `schema-common.md` に置き、本ファイルはそれからの差分と本 Vault 固有の型を書きます（2026-09-04）。CLAUDE.md と矛盾が生じた場合は CLAUDE.md を優先し、本ファイルを更新してください。
 
 ---
 
 ## 1. 共通フロントマター（全ページ必須）
 
+共通の定義（必須7項目・各フィールドの意味・status の遷移・二つのコールアウト）は **[[schema-common]] §A** にある。本節はそれを前提に、本 Vault の型一覧と語彙、および完成形の例だけを書く。
+
 ```yaml
 ---
-type: person | trial | protocol | trigger | concept | entity | ecomap | sensitive | public-system | procedure | query | review
-created: YYYY-MM-DD
+type: person | plan | monitoring | meeting | trial | protocol | trigger | concept | entity | ecomap | sensitive | public-system | procedure | query | review
+created: YYYY-MM-DD          # 記録日（不変。schema-common §A-2）
 updated: YYYY-MM-DD
 sources:
   - "[[raw/path/ファイル名]]"
@@ -23,6 +25,9 @@ sensitivity: public | internal | sensitive | restricted
 person_id: "P_001"   # 該当しないページは省略
 last_confirmed: YYYY-MM-DD   # この情報が「まだ正しい」と確かめた日（§6）。現況を主張する型では推奨
 confirmed_by: 記録のみ | 本人に確認 | 家族に確認 | 支援者に確認 | 実地で確認   # 確認の手段
+valid_from: YYYY-MM-DD       # この事実が成立した日（schema-common §C）。不明なら書かない
+valid_until: YYYY-MM-DD      # 当てはまらなくなった日。相談支援専門員が裁定して書く
+valid_until_reason: "終了の理由1行"   # valid_until を書くとき、superseded_by が無ければ必須
 superseded_by: "[[...]]"     # status: stale のとき。どの記録に置き換わったか
 provided_by: 本人 | 家族 | 事業所 | 後見人 | 医療機関 | 行政 | 会議 | 相談支援   # 情報の出所（§7）。AI が保存先の棚から推定して付与
 provided_by_detail: "GH○○（[[E_GH○○]] 参照）"   # 任意。具体名は entity 参照で
@@ -31,37 +36,19 @@ source_hash: "64桁の16進（sha256）"   # 任意。sources の raw/ 原本の
 ---
 ```
 
-### フィールドの意味
+### 共通からの差分（本 Vault 固有）
 
-| フィールド | 必須 | 説明 |
-|------------|------|------|
-| `type` | ○ | ページ型。配置ディレクトリと一致させる |
-| `created` | ○ | 作成日（YYYY-MM-DD） |
-| `updated` | ○ | 最終更新日（YYYY-MM-DD） |
-| `sources` | ○ | 参照した `raw/` のソース。複数可 |
-| `tags` | ○ | 横断検索用。最低1つは付与 |
-| `related` | △ | 関連する `wiki/` ページ。空配列可 |
-| `status` | ○ | `draft` / `active` / `review` / `stale` の4値 |
-| `sensitivity` | ○ | §3 のアクセス制御レベル |
-| `person_id` | △ | Neo4j 支援DB と共有する匿名化ID |
-| `last_confirmed` | △ | **この情報がまだ正しいと確かめた日**。`updated`（編集した日）とは別物。現況を主張する型（§6）では欠落・期限超過が lint の WARN 対象 |
-| `confirmed_by` | △ | 確認の手段（Neo4j 支援DB の source に相当）。`記録のみ` が最も弱く、`本人に確認`・`実地で確認` が最も強い |
-| `superseded_by` | △ | `status: stale` のページで、置き換え先への `[[リンク]]`。stale 化の連鎖を追えるようにする |
-| `provided_by` | △ | **この情報は誰から来たか**。多法人モデルの出所記録。AI が振り分け先の棚から推定して付与する（黙認方式） |
-| `provided_by_detail` | △ | 提供元の具体名。entity ページ参照で書く（個人名は書かない） |
-| `share_scope` | △ | **誰に渡してよいか**。`team`（支援チーム内共有可）/ `consent-required`（本人・後見人の同意要）/ `origin-only`（提供元と相談支援専門員の間に留める）。欠落時は安全側の `consent-required` 扱い |
-| `source_hash` | △ | **任意**。`sources` の raw/ 原本の sha256（64桁の16進）。Vault と Neo4j 支援DB が**同一原本から出たことを識別子だけで突き合わせる**ための橋（dual-intake-routing.md §1）。単独運用（Neo4j と連携しない場合）では書かなくてよい。lint はあれば形式のみ検査し、無ければ何もしない |
+| 項目 | 共通（schema-common） | 本 Vault |
+|------|----------------------|---------|
+| 型の構成 | 継承12型（person / trial / protocol / trigger / concept / entity / ecomap / sensitive / public-system / procedure / query / review） | **15型（plan / monitoring / meeting ＋ 継承12型）**。相談支援の中核文書3型は §2-1b〜2-1d |
+| `tags` の例 | Vault ごと | 親なき後 / 知的障害 |
+| `confirmed_by` の語彙 | Vault ごと | 記録のみ / 本人に確認 / 家族に確認 / 支援者に確認 / 実地で確認（Neo4j 支援DB の source に相当） |
+| `provided_by` の語彙 | Vault ごと | 本人 / 家族 / 事業所 / 後見人 / 医療機関 / 行政 / 会議 / 相談支援 の8値（多法人モデルの出所記録。§7） |
+| `review` の判断主体 | 管理者 | 作者（`wiki/reviews/` と連動） |
+| `source_hash` の相手先 | 同一原本の突き合わせ | Neo4j 支援DB（dual-intake-routing.md §1）。単独運用では書かなくてよい |
+| `valid_from` / `valid_until` を書く人 | 人 | 相談支援専門員。AI は提案も推定もしない（§6-5） |
 
-> **sensitivity は「深さ」・share_scope は「宛先」の直交2軸。** 会議で共有済みの行動障害の詳細は sensitivity: sensitive かつ share_scope: team でありうる。`origin-only` のページは sensitivity によらず外部共有一覧（--allowlist）から無条件に除外される（fail-closed）。
-
-> **`updated` と `last_confirmed` は別物。** 誤字修正でも `updated` は動くが、それは「この情報が今も正しい」ことを何も保証しない。逆に、読み返して「まだこの通り」と確かめたなら、本文を1文字も変えなくても `last_confirmed` を更新する。後の支援者・法律職が信じてよいのは `last_confirmed` のほうである。
-
-### status の遷移
-
-- `draft` — 作成中。レビュー前
-- `active` — 現役で使われている記録
-- `review` — 作者判断待ち（`wiki/reviews/` と連動）
-- `stale` — 過去の仮説。本人の状態変化等で現状と乖離。**削除せず保持する**（CLAUDE.md §2-7）。置き換え先があれば `superseded_by` で示す
+> `share_scope` の3値の意味と「sensitivity は深さ・share_scope は宛先」の原則は schema-common §A-2・A-3。`stale` の削除禁止は CLAUDE.md §2-7 と同旨。
 
 ---
 
@@ -388,35 +375,36 @@ context: "..."
 
 ## 6. 鮮度 — 確認日と賞味期限（証拠・鮮度モデル）
 
-この Wiki は「作った瞬間」ではなく「**読まれる瞬間**」——引き継ぎ・内部審査・裁判所報告の場面——に正しくなければ意味がない。本人の状態は変化するため、**現在の状態を主張する型**には賞味期限の考え方を入れる。
+原理（型の二分類・staleAfter の基底値・確認と否定の連鎖・三分法・時点の2軸）は **[[schema-common]] §B・§C** にある。本節は本 Vault での型の割り当てと、定期便の実装だけを書く。この Wiki が正しくなければならない「読まれる瞬間」とは、引き継ぎ・内部審査・裁判所報告の場面である。
 
-### 6-1 型の二分類
+### 6-1 型の二分類（本 Vault の割り当て）
 
 | 分類 | 型 | 鮮度検査 |
 |------|-----|---------|
-| **現在の主張**（陳腐化する） | person / protocol / trigger / ecomap / sensitive | **対象**。`last_confirmed` の欠落・期限超過を lint が WARN |
+| **現在の主張**（陳腐化する） | person / protocol / trigger / ecomap / sensitive | **対象**。`last_confirmed` の欠落・期限超過を lint が WARN（`valid_until` が書かれたページは対象外） |
 | **出来事の記録**（証拠。日付に固定される） | trial / plan / monitoring / meeting / query | **対象外**。それぞれの必須日付（trial_date / planned_on / monitored_on / held_on / query_date）が時点を固定する |
 
 ### 6-2 型別の確認の目安（staleAfter）
 
-| type | 目安 | 理由 |
-|------|------|------|
-| `person` | **90日** | current_living 等の現況は変わる（旧 §3-3 読解点検「3ヶ月以上更新なしの Person」の機械化） |
-| `protocol` | **90日** | 「今も機能している手順」でなければ手順の意味がない |
-| `trigger` | **180日** | 本人の状態は変化する。喜び・苦痛の引き金も入れ替わる |
-| `sensitive` | **180日** | 性関連等は半年ごとにレビュー（旧 §3-3 読解点検「性関連ページの最終レビュー日」の機械化） |
-| `ecomap` | **30日** | 月単位スナップショットが前提 |
+基底値（person 90 / protocol 90 / trigger 180 / sensitive 180 / ecomap 30）は schema-common §B-2 のとおり。**本 Vault に追加の型はない。** 数値を変えるときは schema-common の表と `scripts/okf_core.py` の `BASE_STALE_AFTER_DAYS` を同時に直す（本 Vault 固有の型を将来足すなら `scripts/okf_lint.py` の Config `stale_after_days`）。
 
-- 対象は `status: active` / `review` のみ（`draft`・`stale` は対象外）
-- 数値を変えるときは**この表と `scripts/okf_lint.py` の `STALE_AFTER_DAYS` を同時に**直す
-- `concept`・`entity`・`public-system`・`procedure` は知識ページであり対象外。制度の鮮度は `last_updated_law` と **制度ウォッチ**（法令・制度の定期監視。`docs/watchlist.md` を正典に外部の変化を検知して review に起票する）で追う。`verified_on` が365日を超えた public-system は WARN（制度ウォッチが正常稼働していれば発火しない、見張りの見張り）
+`concept`・`entity`・`public-system`・`procedure` は知識ページであり対象外。制度の鮮度は `last_updated_law` と**制度ウォッチ**（法令・制度の定期監視。`docs/watchlist.md` を正典に外部の変化を検知して review に起票する）で追う。
 
-### 6-3 確認・否定の連鎖（confirms / contradicts / superseded_by）
+### 6-3 確認・否定の連鎖と定期便（本 Vault の実装）
 
 日々の Trial は既存の記録に対する**証拠**として働く（§2-2）。success → `confirms` ＋ 指し先の `last_confirmed` を試行日に更新。failure → `contradicts` ＋ 指された側を見直し（`status: review`・改訂・`stale` ＋ `superseded_by`）。これで「なぜ今の手順になったのか」を証拠ごと遡れる。
 
 **モニタリングは鮮度更新の定期便である。** monitoring（§2-1c）の `confirms` に挙がった person / protocol / trigger は、`last_confirmed` を `monitored_on` に更新してよい（confirmed_by: 実地で確認 または 支援者に確認）。trial が日々の証拠なら、**monitoring は制度が保証する定期の証拠**——鮮度の仕組みは、相談支援の法定リズム（モニタリング周期）に乗って回る。
 
-### 6-4 鮮度は WARN、機微は ERROR
+`contradicts` に挙がったページは、その事実がいつまで当てはまっていたかを相談支援専門員が裁定し、`valid_until` と `superseded_by`（または `valid_until_reason`）を書く契機になる（schema-common §B-3・§C）。lint は「contradicts で指されたが valid_until が空」を WARN で知らせる。
 
-鮮度切れは ERROR にしない。古い記録は危険信号だが、機微情報の漏出（ERROR）とは性質が違う。`--gate` は ERROR の有無だけを終了コードに反映するため、**鮮度で pre-commit・起動時ゲートは止まらない**。止めない代わりに、lint モード（CLAUDE.md §3-3）と AI の声かけ（「この情報、最近確かめましたか？」）で利用時点に見えるようにする。**確かめていないのに `last_confirmed` を更新してはならない**——既存ページへの一括バックフィルをしないのも同じ理由による。
+### 6-4 三分法
+
+鮮度は WARN、機微は ERROR、構造矛盾は ERROR（schema-common §B-4）。`--gate` は ERROR の有無だけを終了コードに反映するため、鮮度で pre-commit・起動時ゲートは止まらない。止めない代わりに lint モード（CLAUDE.md §3-3）と AI の声かけで利用時点に見えるようにする。**確かめていないのに `last_confirmed` を更新してはならない**——既存ページへの一括バックフィルをしないのも同じ理由による。
+
+### 6-5 時点の2軸（本 Vault の運用）
+
+- `valid_from` / `valid_until` を書くのは相談支援専門員。AI は提案も推定もしない
+- 終了の契機は3つ: monitoring・trial の `contradicts`、本人・家族・事業所からの報告、定期便で「もう当てはまらない」と判断。いずれも人が裁定して書き、`superseded_by` か `valid_until_reason` を残す
+- raw/ の仕分け宣言に「原本の日付」欄を持つ。原本に日付がなければ `不明` と明示し、受付日で代用しない（発生日＝事実時間、`created`＝知得時間）
+- 対訳表（Wiki ↔ Neo4j 支援DB）は CLAUDE.md §9-2

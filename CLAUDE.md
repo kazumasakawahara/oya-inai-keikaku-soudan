@@ -143,7 +143,7 @@ Vault の**外**に受付箱を1つ置く。既定は `~/Desktop/受付箱`（�
 
 **Step 0: 振り分け宣言（インテーク）**
 
-**まず受付箱（§1）を見る。**受付箱にファイルがあれば、あるいは会話や添付でソースが到着したら、保存先を**宣言して**（「事業所からの支援記録として `raw/30_事業所から/GH○○/` に保存します」）raw/ へ保存する。訂正があれば従い、なければそのまま進む（§2-1 黙認方式）。棚から `provided_by` を推定し、`share_scope` は明示がなければ `consent-required`。振り分けを log.md に1行記録。受付箱から取り込む場合はコピーではなく**移動**する（原本を1つに保ち、受付箱を空に戻すため）。
+**まず受付箱（§1）を見る。**受付箱にファイルがあれば、あるいは会話や添付でソースが到着したら、保存先を**宣言して**（「事業所からの支援記録として `raw/30_事業所から/GH○○/` に保存します」）raw/ へ保存する。訂正があれば従い、なければそのまま進む（§2-1 黙認方式）。棚から `provided_by` を推定し、`share_scope` は明示がなければ `consent-required`。振り分けを log.md に1行記録。受付箱から取り込む場合はコピーではなく**移動**する（原本を1つに保ち、受付箱を空に戻すため）。宣言には**「原本の日付」を1行含める**（面談日・記録日・発行日など原本自身が持つ日付）。原本に日付がなければ `原本の日付: 不明` と書き、受付日で代用しない——発生日（事実時間）と記録日（`created`・知得時間）を混同しないため（schema-common.md §C）。
 
 **Step 1: Analysis（分析）**
 
@@ -176,6 +176,12 @@ Wiki内を横断検索して質問に回答する。
 3. **回答が価値ある場合**、「この回答を`wiki/queries/`に保存しますか？」と確認
 4. 保存時は`templates/query.md`を雛形に使用し、後のingestで他ページから参照可能にする
 
+**回答するときの約束（時点の2軸。schema-common.md §C-4）**
+
+- `valid_until` が記入された事実を「現在の事実」として答えない。答えるときは「〜まで有効だった」と期間を添える
+- 鮮度切れ（staleAfter 超過・`valid_until` 空）のページから答えるときは、最終確認日（`last_confirmed`）を添える
+- `valid_from` / `valid_until` は相談支援専門員が書く。AI は提案も推定もしない。`contradicts` で指されたページを見つけたら「いつまで当てはまっていましたか」と尋ねるところまで
+
 ### 3-3 lint（健全性チェック）
 
 定期的にWikiの健全性を点検する。
@@ -207,8 +213,9 @@ cd ~/Obsidian/oya-inai-wiki && python3 scripts/okf_lint.py
   - `restricted` が `wiki/sensitive/restricted/` 配下にあるか
   - `sensitive` 以上に `sensitive_purpose` が明記されているか
   - 本文への PII 混入（携帯番号・生年月日・手帳番号・受給者証番号・住居表示）
+- **時点の2軸**（schema-common.md §C）: `valid_from` ＞ `valid_until`、`valid_from` ＞ `created`、`valid_until` ありで `status: active`、終了理由（`superseded_by` / `valid_until_reason`）なし、`superseded_by` の指し先不在・指す側が stale でない——は **ERROR**（構造矛盾）。`contradicts` で指されたのに `valid_until` が空なら WARN。`valid_until` が書かれたページは鮮度検査の対象外
 - `public-system` の `last_updated_law` 欠損（法改正追従用）
-- **鮮度**（schema.md §6。証拠・鮮度モデル）
+- **鮮度**（schema-common.md §B。証拠・鮮度モデル。本 Vault の型の割り当ては schema.md §6）
   - 現在の状態を主張する型（`person` / `protocol` / `trigger` / `sensitive` / `ecomap`、`status: active|review`）の `last_confirmed`（最終確認日）の欠落
   - 型別の目安超過（person・protocol: 90日 / trigger・sensitive: 180日 / ecomap: 30日）
   - `confirmed_by` の未定義値（記録のみ / 本人に確認 / 家族に確認 / 支援者に確認 / 実地で確認）
@@ -263,6 +270,9 @@ sensitivity: public | internal | sensitive | restricted   # §7参照
 person_id: "P_001"   # 匿名化ID（Neo4j支援DBと共有）。該当しないページは省略
 last_confirmed: YYYY-MM-DD   # まだ正しいと確かめた日（schema.md §6）
 confirmed_by: 記録のみ | 本人に確認 | 家族に確認 | 支援者に確認 | 実地で確認
+valid_from: YYYY-MM-DD       # この事実が成立した日（事実時間。schema-common.md §C）。不明なら書かない
+valid_until: YYYY-MM-DD      # 当てはまらなくなった日。相談支援専門員が裁定して書く
+valid_until_reason: "…"      # valid_until を書くとき、superseded_by が無ければ必須
 provided_by: 本人 | 家族 | 事業所 | 後見人 | 医療機関 | 行政 | 会議 | 相談支援   # 出所（AI が棚から推定）
 share_scope: team | consent-required | origin-only   # 宛先境界。欠落時は consent-required 扱い
 ---
@@ -547,6 +557,16 @@ context: "..."
 - Wikiの`person_id`フロントマターからNeo4jへ参照
 - Neo4jのPersonノードに`wiki_path: "wiki/persons/P_001_..."`プロパティを持たせて逆引き
 - 重大な変更（GH移行・診断変更等）は両方を更新。先にNeo4jを更新し、Wikiでナラティブを補完する順序
+- **時点の2軸の対訳**（schema-common.md §C。support-db の事実時間軸 SCHEMA_CONVENTION v3.5 / SEMANTIC_MODEL v1.8 と同義。Wiki は snake_case、支援DB は camelCase）:
+
+| Wiki | 支援DB | 意味 |
+|---|---|---|
+| `created` | `registeredAt` | 記録日（不変） |
+| `last_confirmed` | `lastConfirmedAt` | 最終確認日 |
+| `valid_from` | `validFrom` | 事実の始点（任意） |
+| `valid_until` | `validTo` | 事実の終点（裁定時に記入） |
+| `superseded_by` / `valid_until_reason` | 終了日＋新規追加、裁定理由 | 置き換えの記録 |
+| `confirms` / `contradicts` | `CONFIRMS` / `CONTRADICTS` | 証拠の連鎖（知得軸） |
 
 ### 9-3 docker起動チェック
 
@@ -633,9 +653,10 @@ Neo4j参照前に必ず`docker ps --filter name=support-db-neo4j`で稼働確認
 4. `log.md`の最新3エントリを確認（存在すれば）
 5. **`python3 scripts/okf_lint.py --gate` を実行する（必須）**
    - 終了コード `2` なら、作業に入る前に ERROR を作者に報告する。機微情報の漏出リスクが未解消のまま ingest や query に進むことはしない
-   - `--gate` が見るのは ERROR（機微）のみ。鮮度の WARN はここでは止めない——全チェック（lint モード）で拾い、§3-3「鮮度 WARN の扱い」に従って作者に確認を促す
+   - `--gate` が見るのは ERROR（機微・構造矛盾）のみ。鮮度の WARN はここでは止めない——全チェック（lint モード）で拾い、§3-3「鮮度 WARN の扱い」に従って作者に確認を促す
    - 本Vaultは git 管理下にあり、`git config core.hooksPath githooks` で pre-commit 関所も有効化できる。ただし日常運用は commit を伴わないことが多いため、この起動時チェックを省略してはならない
-6. 作者に「今日は何モードで作業しますか？（ingest / query / lint / graph-insight / セットアップ）」を尋ねる
+6. **読むときの約束を守る**（schema-common.md §C-4・§3-2）: `valid_until` のある事実を現在の事実として答えない。鮮度切れのページから答えるときは最終確認日を添える。`valid_until` を推定して書かない
+7. 作者に「今日は何モードで作業しますか？（ingest / query / lint / graph-insight / セットアップ）」を尋ねる
 
 ---
 

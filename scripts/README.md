@@ -56,7 +56,9 @@ python3 scripts/okf_lint.py --allowlist  # 外部配布可能ファイルの一�
 終了コード: `0` 違反なし / `1` WARN のみ / `2` ERROR（機微情報の漏出リスク）
 ※ `--gate` は ERROR の有無だけを返す（WARN では `0`）。鮮度の WARN で commit・起動時ゲートは止まらない
 
-**鮮度検査（schema.md §6、2026-08-09 追加）**: 現在の状態を主張する型（person / protocol / trigger / sensitive / ecomap、`status: active|review` のみ）について、`last_confirmed`（旧 `last_validated` も同義として受理）の欠落・目安日数超過・`confirmed_by` の未定義値を **WARN** で報告する。出来事の記録（trial / plan / monitoring / meeting / query）は対象外。閾値は `okf_lint.py` の `STALE_AFTER_DAYS`（schema.md §6-2 と同時に変更すること）。既存ページへの `last_confirmed` の一括バックフィルは行わない——確認していないものを確認済みにしないため、WARN を確認待ちキューとして使う。
+**鮮度検査（schema.md §6、2026-08-09 追加）**: 現在の状態を主張する型（person / protocol / trigger / sensitive / ecomap、`status: active|review` のみ）について、`last_confirmed`（旧 `last_validated` も同義として受理）の欠落・目安日数超過・`confirmed_by` の未定義値を **WARN** で報告する。出来事の記録（trial / plan / monitoring / meeting / query）は対象外。閾値は `okf_core.py` の `BASE_STALE_AFTER_DAYS`（schema-common.md §B-2 と同時に変更すること。Vault 固有型は `okf_lint.py` の Config）。`valid_until` が書かれたページ（終了した事実）は対象外。既存ページへの `last_confirmed` の一括バックフィルは行わない——確認していないものを確認済みにしないため、WARN を確認待ちキューとして使う。
+
+**時点の2軸（schema-common.md §C、2026-09-04 柱2で追加）**: 現在の主張型の `valid_from` / `valid_until` / `superseded_by` の構造矛盾（始点＞終点、始点＞created、終了しているのに active、終了理由なし、置き換え先の不在・status 不整合）を **ERROR**、`contradicts` で指されたのに `valid_until` が空なら **WARN**。欠落は何も出さない（任意項目）。
 
 **出所と宛先（schema.md §1、2026-08-09 再設計で追加）**: `provided_by`（8値）と `share_scope`（team / consent-required / origin-only）の語彙を WARN 検査。**`share_scope: origin-only` のページは sensitivity によらず `--allowlist` から無条件除外**（fail-closed）。
 
@@ -83,7 +85,7 @@ python3 scripts/okf_lint.py --allowlist  # 外部配布可能ファイルの一�
 ## テスト
 
 ```bash
-python3 scripts/test_okf_core.py   # 共通検査 okf_core.py の回帰テスト（25ケース＋4シナリオ。姉妹 Vault と同一内容）
+python3 scripts/test_okf_core.py   # 共通検査 okf_core.py の回帰テスト（36ケース＋4シナリオ。姉妹 Vault と同一内容）
 python3 scripts/test_okf_lint.py   # lint の回帰テスト（23ケース＋ゲート挙動）
 python3 scripts/test_core_docs.py  # 相談支援中核文書3型（plan/monitoring/meeting）のゲートテスト（9ケース）
 zsh     scripts/test_precommit.sh  # 関所の動作テスト（5ケース。clean tree 必須——git reset --hard を使う）

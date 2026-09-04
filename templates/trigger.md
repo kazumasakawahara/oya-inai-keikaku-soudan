@@ -14,6 +14,10 @@ person_id: "P_XXX"
 trigger_type: joy           # joy | distress
 trigger_modality: visual    # visual | auditory | tactile | olfactory | gustatory | social | cognitive
 intensity: medium           # low | medium | high
+# 時点の2軸（任意。schema-common.md §C）。使うときは行頭の # を外す。値の後ろに # のコメントを書かない（lint が値の一部として読む）
+# valid_from: YYYY-MM-DD
+# valid_until: YYYY-MM-DD
+# valid_until_reason: ""
 ---
 
 # {{トリガー名}}

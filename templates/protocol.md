@@ -13,6 +13,10 @@ sensitivity: internal
 person_id: "P_XXX"
 protocol_domain: morning   # morning | meal | bath | sleep | outing | medical | private-time | others-rights-learning | wiki-explanation
 last_validated: YYYY-MM-DD
+# 時点の2軸（任意。schema-common.md §C）。使うときは行頭の # を外す。値の後ろに # のコメントを書かない（lint が値の一部として読む）
+# valid_from: YYYY-MM-DD
+# valid_until: YYYY-MM-DD
+# valid_until_reason: ""
 ---
 
 # {{プロトコル名}}
