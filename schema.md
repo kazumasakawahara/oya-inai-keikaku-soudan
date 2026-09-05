@@ -29,9 +29,9 @@ valid_from: YYYY-MM-DD       # この事実が成立した日（schema-common §
 valid_until: YYYY-MM-DD      # 当てはまらなくなった日。相談支援専門員が裁定して書く
 valid_until_reason: "終了の理由1行"   # valid_until を書くとき、superseded_by が無ければ必須
 superseded_by: "[[...]]"     # status: stale のとき。どの記録に置き換わったか
-provided_by: 本人 | 家族 | 事業所 | 後見人 | 医療機関 | 行政 | 会議 | 相談支援   # 情報の出所（§7）。AI が保存先の棚から推定して付与
+provided_by: 本人 | 家族 | 事業所 | 後見人 | 医療機関 | 行政 | 会議 | 相談支援   # 情報の出所（schema-common.md §A-2）。AI が保存先の棚から推定して付与
 provided_by_detail: "GH○○（[[E_GH○○]] 参照）"   # 任意。具体名は entity 参照で
-share_scope: team | consent-required | origin-only   # 宛先境界（§7）。欠落時は consent-required とみなす
+share_scope: team | consent-required | origin-only   # 宛先境界（schema-common.md §A-2・A-3）。欠落時は consent-required とみなす
 source_hash: "64桁の16進（sha256）"   # 任意。sources の raw/ 原本のハッシュ。Neo4j 支援DB と同一原本を突き合わせるための橋
 ---
 ```
@@ -43,7 +43,7 @@ source_hash: "64桁の16進（sha256）"   # 任意。sources の raw/ 原本の
 | 型の構成 | 継承12型（person / trial / protocol / trigger / concept / entity / ecomap / sensitive / public-system / procedure / query / review） | **15型（plan / monitoring / meeting ＋ 継承12型）**。相談支援の中核文書3型は §2-1b〜2-1d |
 | `tags` の例 | Vault ごと | 親なき後 / 知的障害 |
 | `confirmed_by` の語彙 | Vault ごと | 記録のみ / 本人に確認 / 家族に確認 / 支援者に確認 / 実地で確認（Neo4j 支援DB の source に相当） |
-| `provided_by` の語彙 | Vault ごと | 本人 / 家族 / 事業所 / 後見人 / 医療機関 / 行政 / 会議 / 相談支援 の8値（多法人モデルの出所記録。§7） |
+| `provided_by` の語彙 | Vault ごと | 本人 / 家族 / 事業所 / 後見人 / 医療機関 / 行政 / 会議 / 相談支援 の8値（多法人モデルの出所記録。意味は schema-common.md §A-2） |
 | `review` の判断主体 | 管理者 | 作者（`wiki/reviews/` と連動） |
 | `source_hash` の相手先 | 同一原本の突き合わせ | Neo4j 支援DB（連携の設計文書 dual-intake-routing.md §1 は作者環境の文書で配布物には含まれない。役割分担は docs/連携.md）。単独運用では書かなくてよい |
 | `valid_from` / `valid_until` を書く人 | 人 | 相談支援専門員。AI は提案も推定もしない（§6-5） |

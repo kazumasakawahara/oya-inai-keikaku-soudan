@@ -1,7 +1,7 @@
 # scripts/ — 機微情報ゲートの仕組み
 
 このディレクトリは、**宣言されたルールが実際に守られていることを機械的に確かめる**ためのものです。
-2026-07-26 に構築しました。経緯の詳細は `log.md` の同日エントリ4件を参照してください。
+2026-07-26 に作者の実運用 Vault で構築し、本テンプレートへ移植しました（本テンプレートの `log.md` は導入者用の雛形で、構築の経緯は載っていません）。
 
 ---
 
@@ -23,7 +23,7 @@
 ## 3層構造
 
 ```
-  ① 宣言        schema.md §2-7 / §5 / §7
+  ① 宣言        schema.md §1 / §3 / §5 / §6 ＋ schema-common.md §A〜§C
                  何が正しいかを定義する。人間が読む
                           ↓
   ② 検証        scripts/okf_lint.py（＋ scripts/okf_core.py）
@@ -97,7 +97,7 @@ ERROR は `--gate` の終了コード `2` に反映され、pre-commit と起動
 ### pre-commit の3関所
 
 1. **`raw/` のステージを拒否** — `.gitignore` は `git add -f` で貫通できるための二重化
-2. **`remote` の存在を拒否** — この Vault はローカル専用。誤 push の経路を持たない設計
+2. **`remote` × 実データを拒否** — remote があり、かつ個人に紐づくページ（persons / plans / monitorings / meetings / trials / protocols / triggers / ecomaps / sensitive）が存在または staged のときだけ止める。テンプレートを clone しただけの段階では止まらない。実データの運用に入ったら remote を外すか private にする（docs/導入手順.md Step 1）
 3. **`okf_lint.py --gate` が ERROR なら拒否**
 
 フックは `.git/hooks/` ではなく **版管理下の `githooks/`** に置き、`core.hooksPath` で参照しています
@@ -108,9 +108,9 @@ ERROR は `--gate` の終了コード `2` に反映され、pre-commit と起動
 ## テスト
 
 ```bash
-python3 scripts/test_okf_core.py   # 共通検査 okf_core.py の回帰テスト（36ケース＋4シナリオ。姉妹 Vault と同一内容）
+python3 scripts/test_okf_core.py   # 共通検査 okf_core.py の回帰テスト（36ケース＋5シナリオ。姉妹 Vault と同一内容）
 python3 scripts/test_okf_lint.py   # lint の回帰テスト（23ケース＋ゲート挙動）
-python3 scripts/test_core_docs.py  # 相談支援中核文書3型（plan/monitoring/meeting）のゲートテスト（9ケース）
+python3 scripts/test_core_docs.py  # 相談支援中核文書3型（plan/monitoring/meeting）のゲートテスト（9ケース）＋ 配布物の「AGENTS.md §N-M」参照先が実在するかの検査
 zsh     scripts/test_precommit.sh  # 関所の動作テスト（5ケース。clean tree 必須——git reset --hard を使う）
 ```
 
@@ -121,10 +121,7 @@ zsh     scripts/test_precommit.sh  # 関所の動作テスト（5ケース。cle
 > **okf_core.py / test_okf_core.py を直したら姉妹 Vault へも同じ内容を届けること。**
 > 片方だけ変えると、反対側の `scripts/release.sh` がハッシュ照合で「共通部分がずれています」と言う。
 
-> `test_guardian_types.py` は 2026-08-09 の再設計（法律職4型の削除）に伴い廃止し、
-> `test_core_docs.py` へ委譲するスタブになっている。次回の git 整理時に `git rm` してよい。
-
-**`schema.md` か `okf_lint.py` を触ったら必ず走らせてください。**
+**`schema.md` / `schema-common.md` か `okf_lint.py` / `okf_core.py` を触ったら必ず走らせてください。**
 
 ### なぜテストが要るか
 
@@ -156,7 +153,7 @@ zsh     scripts/test_precommit.sh  # 関所の動作テスト（5ケース。cle
 
 ## 変更するときの手順
 
-1. `schema.md` を直す（何が正しいかの根拠は常にここ）
+1. `schema.md` を直す（何が正しいかの根拠は常にここ。両 Vault に共通する規則なら `schema-common.md`）
 2. `okf_lint.py` を追随させる。両 Vault に共通する検査なら `okf_core.py`（正本は本リポ。姉妹 Vault へ同じ内容を届ける）
 3. `test_okf_lint.py`（共通検査なら `test_okf_core.py`）に**その変更を捉えるケースを追加**する
 4. 両方のテストを走らせる
