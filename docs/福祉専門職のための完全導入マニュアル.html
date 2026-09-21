@@ -333,13 +333,24 @@
 <p><strong>方法 A（おすすめ・Git を使う場合）</strong></p>
 <pre><code class="language-bash">git clone https://github.com/kazumasakawahara/oya-inai-keikaku-soudan.git ~/Obsidian/oya-inai-keikaku-soudan
 </code></pre>
-<p><strong>方法 B（ZIP でダウンロード）</strong></p>
-<p>GitHub のページ右上の緑のボタンから「Download ZIP」を選び、展開して、<code>~/Obsidian/</code> の下に置きます。</p>
 <blockquote>
+<p><code>~/Obsidian</code> フォルダがまだ無くても、このコマンドが自動で作ります。<strong>先にフォルダを作って中に入る必要はありません。</strong>上の 1 行を、そのまま貼り付けて実行してください。</p>
+</blockquote>
+<p><strong>方法 B（ZIP でダウンロード）</strong></p>
+<p>GitHub のページ右上の緑のボタンから「Download ZIP」を選び、展開します。そのあと、次の順で置いてください。</p>
+<ol>
+<li><code>~/Obsidian</code> フォルダが無ければ、先に作ります（Windows の例: <code>C:\Users\あなたの名前\Obsidian</code>）</li>
+<li>展開してできたフォルダの名前は <code>oya-inai-keikaku-soudan-main</code> になっています。末尾の <code>-main</code> を消して、<code>oya-inai-keikaku-soudan</code> に直します</li>
+<li>直したフォルダを <code>~/Obsidian/</code> の下に置きます</li>
+</ol>
+<blockquote>
+<p>展開のしかたによっては、<strong>同じ名前のフォルダが二重</strong>になることがあります（Windows の「すべて展開」でよく起きます）。フォルダを開いて、中に同じ名前のフォルダが 1 つあるだけなら、<strong>内側のフォルダ</strong>が本体です。内側のほうを <code>~/Obsidian/</code> の下に置いてください。</p>
 <p>ZIP の場合、<strong>実行の許可が落ちていることがあります。</strong>そのままだと関所（後述）が黙って効かなくなるので、次を一度だけ実行してください。</p>
 <p><code>bash
 cd &lt;あなたのVault&gt; &amp;&amp; chmod 755 githooks/pre-commit scripts/*.py scripts/*.sh</code></p>
 </blockquote>
+<p><strong>置けたかどうかの確かめ方（方法 A・B 共通）</strong></p>
+<p><code>~/Obsidian/oya-inai-keikaku-soudan</code> を開いて、すぐ下に <code>AGENTS.md</code> と <code>purpose.md</code> が見えれば正しく置けています。見えずに、同じ名前のフォルダがもう 1 つあるだけなら、フォルダが二重になっています。その場合は、内側のフォルダを Vault として使ってください（3-2 で指定するのも内側のフォルダです）。</p>
 <h3 id="3-2-obsidian-で開く">3-2. Obsidian で開く</h3>
 <p>Obsidian を起動し、「フォルダを Vault として開く」を選んで、いま置いたフォルダを指定します。左側にフォルダの一覧が出れば成功です。</p>
 <p><strong>なぜ必要？</strong> — Obsidian は、フォルダをそのまま「ノートの入れ物」として扱うアプリです。特別な保存形式はありません。中身はただのテキストファイルなので、<strong>将来 Obsidian をやめても記録は残ります。</strong></p>
